@@ -1,5 +1,7 @@
 # cs_304_project
-a graphics project for the university 
+a graphics project for the university
+
+The goal is to build a game of catch the flag
 # Team
 Abanob Samaan,
 Abdelrahman Mohammed,
