@@ -8,14 +8,15 @@ import javax.sound.sampled.*;
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream(filePath));
         clip = AudioSystem.getClip();
         clip.open(audioInputStream);
-        if (loop) {
-            clip.loop(Clip.LOOP_CONTINUOUSLY); // loop the sound
-        }
+
     }
 
     public void play() { // play music
         if (clip != null) {
             clip.setFramePosition(0);
+            if (loop) {
+                clip.loop(Clip.LOOP_CONTINUOUSLY); // loop the sound
+            }
             clip.start();
         }
     }
