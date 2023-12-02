@@ -9,7 +9,8 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class eventListener  extends AnimListener implements GLEventListener{
-    String textureNames[] = {"flag//flag animation1.png"};
+    int frame = 0 ;
+    String textureNames[] = {"flag//flag animation1.png","flag//flag animation2.png","flag//flag animation3.png","flag//flag animation4.png","flag//flag animation5.png"};
     TextureReader.Texture texture[] = new TextureReader.Texture[textureNames.length];
     int textures[] = new int[textureNames.length];
 
@@ -17,7 +18,7 @@ public class eventListener  extends AnimListener implements GLEventListener{
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
         GL gl = glAutoDrawable.getGL();
-        gl.glClearColor(0.5f, 0.5f, 0.5f, 0.0f); // the color of the canvas ;
+        gl.glClearColor(1.5f, 0.5f, 0.5f, 0.0f); // the color of the canvas ;
 
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity(); // resets the identity of the matrix ;
@@ -48,7 +49,7 @@ public class eventListener  extends AnimListener implements GLEventListener{
                 e.printStackTrace();
             }
         }
-        DrawBackground(gl);
+//        DrawBackground(gl);
     }
 
     @Override
@@ -59,12 +60,16 @@ public class eventListener  extends AnimListener implements GLEventListener{
         gl.glLoadIdentity();
 
         DrawBackground(gl);
+        frame++ ;
+        if (frame > 4) frame =  0 ;
+        System.out.println(frame);
 
 
     }
     public void DrawBackground(GL gl){
+
         gl.glEnable(GL.GL_BLEND);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[0]);	// Turn Blending On
+        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[frame]);	// Turn Blending On
 
         gl.glPushMatrix();
         gl.glBegin(GL.GL_QUADS);
