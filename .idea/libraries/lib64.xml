@@ -2,12 +2,16 @@
   <library name="lib64">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../JOGLwin/lib64" />
+      <root url="file://C:/JOGLwin/lib64" />
+      <root url="file://C:/JOGLwin/lib64" />
     </CLASSES>
     <JAVADOC />
     <NATIVE>
       <root url="file://$PROJECT_DIR$/../JOGLwin/lib64" />
+      <root url="file://C:/JOGLwin/lib64" />
     </NATIVE>
     <SOURCES />
+    <jarDirectory url="file://C:/JOGLwin/lib64" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/../JOGLwin/lib64" recursive="false" />
   </library>
 </component>
