@@ -14,6 +14,6 @@ import javax.media.opengl.GLEventListener;
 
 public abstract class AnimListener implements GLEventListener, KeyListener {
  
-    protected String assetsFolderName = "pics";
+    protected String assetsFolderName = "pics"; // the folder of the pictures to add a texture just add the sub folder name to it
     
 }

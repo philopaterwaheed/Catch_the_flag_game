@@ -18,7 +18,7 @@ public class Main extends  JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);
-        animator = new FPSAnimator(15);
+        animator = new FPSAnimator(24);
         animator.add(glcanvas);
         animator.start();
         getContentPane().add(glcanvas, BorderLayout.CENTER);
