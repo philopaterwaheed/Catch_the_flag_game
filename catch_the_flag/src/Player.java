@@ -27,13 +27,16 @@ public class Player extends  Entity {
 
     @Override
     public void render(GL gl ) {
+
         eventListener.gl.glEnable(GL.GL_BLEND);
         eventListener.gl.glBindTexture(GL.GL_TEXTURE_2D, this.textures[frame]);	// Turn Blending On
 
         eventListener.gl.glPushMatrix();
-       eventListener.gl.glBegin(GL.GL_QUADS);
         eventListener.gl.glScaled(.5,.5,1);
         eventListener.gl.glTranslated(50,50,1);
+
+
+        eventListener.gl.glBegin(GL.GL_QUADS);
         // Front Face
         eventListener.gl.glTexCoord2f(0.0f, 0.0f);
         eventListener.gl.glVertex3f(-1.0f, -1.0f, -1.0f);

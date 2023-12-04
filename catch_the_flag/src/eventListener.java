@@ -59,7 +59,6 @@ public class eventListener  extends AnimListener implements GLEventListener{
 
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
-        GL gl = glAutoDrawable.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
         gl.glLoadIdentity();
