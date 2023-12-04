@@ -23,7 +23,6 @@ public abstract class Entity {
         this.hitbox = new hitBox(x, y, this.width);
         if (render) {
             Textures.addAll(Arrays.asList(texturesStrings));
-            addTextures(Textures);
             texture = new TextureReader.Texture[Textures.size()];
             textures = new int [Textures.size()];
             eventListener.gl.glGenTextures(texturesStrings.length, textures, 0);
@@ -32,7 +31,6 @@ public abstract class Entity {
 
     abstract public void update();
 
-    abstract public void addTextures(ArrayList<String> textures); // to add the object's textures ;
 
     abstract public void render(GL gl); // a function to render entity on the screen
 
