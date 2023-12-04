@@ -21,11 +21,6 @@ public class Player extends  Entity {
     }
 
     @Override
-    public void addTextures(ArrayList<String> textures) {
-
-    }
-
-    @Override
     public void render(GL gl ) {
 
         eventListener.gl.glEnable(GL.GL_BLEND);
@@ -33,7 +28,7 @@ public class Player extends  Entity {
 
         eventListener.gl.glPushMatrix();
         eventListener.gl.glScaled(.5,.5,1);
-        eventListener.gl.glTranslated(50,50,1);
+//        eventListener.gl.glTranslated(50,50,1);
 
 
         eventListener.gl.glBegin(GL.GL_QUADS);
