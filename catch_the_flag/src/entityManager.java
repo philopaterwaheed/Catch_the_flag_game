@@ -1,3 +1,4 @@
+import javax.media.opengl.GL;
 import java.util.ArrayList;
 
 public class entityManager {
@@ -11,10 +12,10 @@ public class entityManager {
            e.update();
         }
     }
-    public static void render () {
+    public static void render (GL gl) {
         for (Entity  e: entities)
         {
-            e.update();
+            e.render(gl);
         }
     }
     public static void  entityDestroy(Entity e){
