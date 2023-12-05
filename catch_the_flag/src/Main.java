@@ -22,7 +22,7 @@ public class Main extends  JFrame {
         animator.add(glcanvas);
         animator.start();
         getContentPane().add(glcanvas, BorderLayout.CENTER);
-        setSize(500, 300);
+        setSize(800, 800);
         setLocationRelativeTo(this);
         setVisible(true);
     }
