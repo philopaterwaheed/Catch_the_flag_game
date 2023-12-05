@@ -18,17 +18,17 @@ public class Main extends  JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);
+        glcanvas.addKeyListener(listener);//add key listener
         animator = new FPSAnimator(24);
         animator.add(glcanvas);
         animator.start();
+        setFocusable(true);//set focus for Listener
+        glcanvas.requestFocus();
         getContentPane().add(glcanvas, BorderLayout.CENTER);
-        setSize(800, 800);
+        setSize(1000, 700);
         setLocationRelativeTo(this);
         setVisible(true);
     }
-
-
-
 }
 
 
