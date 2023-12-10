@@ -16,22 +16,28 @@ public class eventListener extends AnimListener {
             "old//redflagbb.png", "old//Balloon1.png", "flag//flag animation4.png", "flag//flag animation5.png", "old//Back.png"};
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     int[] textures = new int[textureNames.length];
-    Player players [] = new Player[2] ;
+    Player[] players = new Player[2];
+    AI[] BlueBalls = new AI[4];
     static GL gl;
-    int xPosition = 50, yPosition = 60;
+    //    int xPosition = 50, yPosition = 60;
     int x = 5, y = 70;
-    int x_Update = 0, y_Update = 0;
+//    int x_Update = 0, y_Update = 0;
 
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
         gl = glAutoDrawable.getGL();
-        gl.glClearColor(1.5f, 0.5f, 0.5f, 0.0f); // the color of the canvas ;
-
+        gl.glClearColor(1.5f, 0.5f, 0.5f, 0.0f);  // the color of the canvas ;
         // init players
 
-        for (int i =0 ; i < 2 ;  i ++){
-            players[i] = new Player(Game.playersX[i] , Game.playersY[i] , true ,Game.player1Textures ,  1 );
+        for (int i = 0; i < 2; i++) {
+            players[i] = new Player(Game.playersX[i], Game.playersY[i], true, Game.player1Textures, 1);
             entityManager.addEntity(players[i]);
+        }
+
+        // init blue balls
+        for (int i = 0; i < 2 + Game.level; i++) {
+            BlueBalls [i] = new AI(5+i*50,2, true, Game.player1Textures ,Game.maxWidth/((3+Game.level)*2),Game.maxHeight/((3+Game.level)*2) );
+            entityManager.addEntity(BlueBalls[i]);
         }
 
 
@@ -91,7 +97,7 @@ public class eventListener extends AnimListener {
 
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
-        Game.fbs ++ ;
+        Game.fbs++;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         DrawBackground(gl);
@@ -100,7 +106,7 @@ public class eventListener extends AnimListener {
         entityManager.render(gl);
         DrawGoal(gl, 1);
         if (Game.fbs == 24)
-            Game.fbs = 0 ;
+            Game.fbs = 0;
     }
 
     public void DrawBackground(GL gl) {
@@ -128,8 +134,8 @@ public class eventListener extends AnimListener {
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, textures[3]);
         gl.glPushMatrix();
-        gl.glTranslated((x-8) / (maxWidth / 2.0) - 0.9, y / (maxHeight / 2.0) - 0.9, 0);
-        gl.glScaled(0.07 * scale, 0.07 * scale*1000/700, 1);
+        gl.glTranslated(x / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
+        gl.glScaled(0.07 * scale, 0.07 * scale * 1000 / 700, 1);
         //System.out.println(x +" " + y);
         gl.glBegin(GL.GL_QUADS);
         // Front Face
@@ -145,7 +151,6 @@ public class eventListener extends AnimListener {
         gl.glPopMatrix();
         gl.glDisable(GL.GL_BLEND);
     }
-
 
 
     @Override
