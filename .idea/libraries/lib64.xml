@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="lib64">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../JOGLwin/lib64/gluegen-rt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JOGLwin/lib64/jogl.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <NATIVE>
+      <root url="file://$PROJECT_DIR$/../JOGLwin/lib64" />
+      <root url="file://$PROJECT_DIR$/../JOGLwin/lib64" />
+      <root url="file://$PROJECT_DIR$/../JOGLwin/lib64" />
+      <root url="file://$PROJECT_DIR$/../JOGLwin/lib64" />
+    </NATIVE>
+    <SOURCES />
+  </library>
+</component>
