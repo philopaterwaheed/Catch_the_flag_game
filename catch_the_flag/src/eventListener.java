@@ -16,21 +16,34 @@ public class eventListener extends AnimListener {
             "old//redflagbb.png", "old//Balloon1.png", "flag//flag animation4.png", "flag//flag animation5.png", "old//Back.png"};
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     int[] textures = new int[textureNames.length];
-    Player player1;
-    player_A[] player = new player_A[5];
+    Player[] players = new Player[2];
+    AI[] BlueBalls = new AI[4];
     static GL gl;
-    int xPosition = 50, yPosition = 60;
+    //    int xPosition = 50, yPosition = 60;
     int x = 5, y = 70;
-    int x_Update = 0, y_Update = 0;
+//    int x_Update = 0, y_Update = 0;
 
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
         gl = glAutoDrawable.getGL();
-        gl.glClearColor(1.5f, 0.5f, 0.5f, 0.0f); // the color of the canvas ;
+        gl.glClearColor(1.5f, 0.5f, 0.5f, 0.0f);  // the color of the canvas ;
+        // init players
+
+        for (int i = 0; i < 2; i++) {
+            players[i] = new Player(Game.playersX[i], Game.playersY[i], true, Game.player1Textures, 1);
+            entityManager.addEntity(players[i]);
+        }
+
+        // init blue balls
+        for (int i = 0; i < 2 + Game.level; i++) {
+            BlueBalls [i] = new AI(5+i*50,2, true, Game.player1Textures ,Game.maxWidth/((3+Game.level)*2),Game.maxHeight/((3+Game.level)*2) );
+            entityManager.addEntity(BlueBalls[i]);
+        }
+
 
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity(); // resets the identity of the matrix ;
-        gl.glOrtho(0.0, 100.0, 0.0, 100.0, -1, 1); // is not need to easy
+        gl.glOrtho(0.0, Game.maxWidth, 0.0, Game.maxHeight, -1, 1); // is not need to easy
         gl.glEnable(GL.GL_TEXTURE_2D);  // Enable Texture Mapping
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
         gl.glGenTextures(textureNames.length, textures, 0);
@@ -84,17 +97,16 @@ public class eventListener extends AnimListener {
 
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
+        Game.fbs++;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
-        entityManager.update();
-        entityManager.render(gl);
         DrawBackground(gl);
         handleKeyPress();
-        player[0] = new player_A(xPosition, yPosition);//the player that will move by key
-        player[0].DrawPlayer(gl, textures, 1);
-        GeneratePlayer(gl);
+        entityManager.update();
+        entityManager.render(gl);
         DrawGoal(gl, 1);
-
+        if (Game.fbs == 24)
+            Game.fbs = 0;
     }
 
     public void DrawBackground(GL gl) {
@@ -122,8 +134,8 @@ public class eventListener extends AnimListener {
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, textures[3]);
         gl.glPushMatrix();
-        gl.glTranslated((x-8) / (maxWidth / 2.0) - 0.9, y / (maxHeight / 2.0) - 0.9, 0);
-        gl.glScaled(0.07 * scale, 0.07 * scale*1000/700, 1);
+        gl.glTranslated(x / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
+        gl.glScaled(0.07 * scale, 0.07 * scale * 1000 / 700, 1);
         //System.out.println(x +" " + y);
         gl.glBegin(GL.GL_QUADS);
         // Front Face
@@ -138,13 +150,6 @@ public class eventListener extends AnimListener {
         gl.glEnd();
         gl.glPopMatrix();
         gl.glDisable(GL.GL_BLEND);
-    }
-
-    public void GeneratePlayer(GL gl) {
-        for (int i = 1; i < player.length; i++) {
-            player[i] = new player_A(23 + x_Update, 10 * i * 3 + y_Update);
-            player[i].DrawPlayer(gl, textures, 1);
-        }
     }
 
 
@@ -180,26 +185,17 @@ public class eventListener extends AnimListener {
 
     public void handleKeyPress() {
         if (isKeyPressed(KeyEvent.VK_LEFT)) {
-//            System.out.println( xPosition + " " + yPosition);
-            if (xPosition > 0) {
-                xPosition--;
-            }
+            players[0].x--;
+//            }
         }
         if (isKeyPressed(KeyEvent.VK_RIGHT)) {
-            if (xPosition < maxWidth - 10) {
-                xPosition++;
-            }
-
+            players[0].x++;
         }
         if (isKeyPressed(KeyEvent.VK_DOWN)) {
-            if (yPosition > 0) {
-                yPosition--;
-            }
+            players[0].y--;
         }
         if (isKeyPressed(KeyEvent.VK_UP)) {
-            if (player[0].y < maxHeight - 10) {
-                yPosition++;
-            }
+            players[0].y++;
         }
     }
 

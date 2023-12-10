@@ -19,7 +19,7 @@ public class Main extends  JFrame {
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);
         glcanvas.addKeyListener(listener);//add key listener
-        animator = new FPSAnimator(24);
+        animator = new FPSAnimator(18);
         animator.add(glcanvas);
         animator.start();
         glcanvas.setFocusable(true);//set focus for Listener
