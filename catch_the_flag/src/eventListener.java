@@ -84,6 +84,7 @@ public class eventListener extends AnimListener {
 
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
+        Game.fbs ++ ;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
         entityManager.update();
@@ -94,7 +95,8 @@ public class eventListener extends AnimListener {
         player[0].DrawPlayer(gl, textures, 1);
         GeneratePlayer(gl);
         DrawGoal(gl, 1);
-
+        if (Game.fbs == 24)
+            Game.fbs = 0 ;
     }
 
     public void DrawBackground(GL gl) {
