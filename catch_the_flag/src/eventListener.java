@@ -37,7 +37,7 @@ public class eventListener extends AnimListener {
 
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity(); // resets the identity of the matrix ;
-        gl.glOrtho(0.0, 100.0, 0.0, 100.0, -1, 1); // is not need to easy
+        gl.glOrtho(0.0, Game.maxWidth, 0.0, Game.maxHeight, -1, 1); // is not need to easy
         gl.glEnable(GL.GL_TEXTURE_2D);  // Enable Texture Mapping
         gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
         gl.glGenTextures(textureNames.length, textures, 0);
