@@ -1,21 +1,32 @@
 import javax.media.opengl.GL;
 
-public class Player extends Entity {
-    double scale  ;
+public class AI extends Entity {
+    int fps = 0;
+    boolean team;
+    String type;
+    int lx, ly;
 
-    Player(int x, int y, boolean render, String[] texturesStrings , double scale) {
+    AI(int x, int y, boolean render, String[] texturesStrings ,int lx, int ly) {
         super(x, y, render, texturesStrings);
-        this.scale = scale ;
+        this.lx=lx;
+        this.ly=ly;
+
+    }
+
+    @Override
+    public void update() {
+        fps++;
+
+        Zigzag();
     }
 
     @Override
     public void render(GL gl) {
-        System.out.println(x+ " " + y);
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.textures[0]);
         gl.glPushMatrix();
         gl.glTranslated(x / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
-        gl.glScaled(0.04 * scale, 0.04*scale*1000/700, 1);
+        gl.glScaled(0.04 , 0.04*10/7, 1);
         //System.out.println(x +" " + y);
         gl.glBegin(GL.GL_QUADS);
         // Front Face
@@ -33,28 +44,27 @@ public class Player extends Entity {
     }
 
     @Override
-    public void update() {
-
-    }
-
-
-    @Override
     public void destroy() {
 
     }
 
-//    @Override
-//    public void update() {
-//
-//    }
-//
-//    @Override
-//    public void render(GL gl) {
-//
-//    }
-//
-//    @Override
-//    public void destroy() {
-//
-//    }
+    int h = 0;
+    int v = 0;
+    int m = 1;
+    int d = 1;
+
+    public void Zigzag() {
+        h++;
+        v++;
+        if (h % lx == 0) {
+            d = -d;
+            h = 0;
+        }
+        if (v % ly == 0) {
+            m = -m;
+            v = 0;
+        }
+        x+=d;
+        y+=m;
+    }
 }
