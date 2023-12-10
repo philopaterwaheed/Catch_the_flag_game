@@ -1,3 +1,6 @@
+import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.FPSAnimator;
+
 import java.awt.BorderLayout;
 import javax.media.opengl.GLCanvas;
 import javax.swing.JFrame;
@@ -7,6 +10,7 @@ public class Main extends  JFrame {
         new Main();
     }
     GLCanvas glcanvas;
+    Animator animator;
     Music mainMusic = new Music("sounds//music//The Verdant Grove LOOP.wav",true);
     eventListener listener = new eventListener();
     public Main(){
@@ -14,14 +18,17 @@ public class Main extends  JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);
+        glcanvas.addKeyListener(listener);//add key listener
+        animator = new FPSAnimator(24);
+        animator.add(glcanvas);
+        animator.start();
+        setFocusable(true);//set focus for Listener
+        glcanvas.requestFocus();
         getContentPane().add(glcanvas, BorderLayout.CENTER);
-        setSize(500, 300);
+        setSize(1000, 700);
         setLocationRelativeTo(this);
         setVisible(true);
     }
-
-
-
 }
 
 
