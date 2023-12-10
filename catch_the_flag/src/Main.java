@@ -19,10 +19,10 @@ public class Main extends  JFrame {
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);
         glcanvas.addKeyListener(listener);//add key listener
-        animator = new FPSAnimator(24);
+        animator = new FPSAnimator(18);
         animator.add(glcanvas);
         animator.start();
-        setFocusable(true);//set focus for Listener
+        glcanvas.setFocusable(true);//set focus for Listener
         glcanvas.requestFocus();
         getContentPane().add(glcanvas, BorderLayout.CENTER);
         setSize(1000, 700);
