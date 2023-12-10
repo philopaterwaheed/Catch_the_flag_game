@@ -122,8 +122,8 @@ public class eventListener extends AnimListener {
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, textures[3]);
         gl.glPushMatrix();
-        gl.glTranslated(x / (maxWidth / 2.0) - 0.9, y / (maxHeight / 2.0) - 0.9, 0);
-        gl.glScaled(0.1 * scale, 0.1 * scale, 1);
+        gl.glTranslated((x-8) / (maxWidth / 2.0) - 0.9, y / (maxHeight / 2.0) - 0.9, 0);
+        gl.glScaled(0.07 * scale, 0.07 * scale*1000/700, 1);
         //System.out.println(x +" " + y);
         gl.glBegin(GL.GL_QUADS);
         // Front Face

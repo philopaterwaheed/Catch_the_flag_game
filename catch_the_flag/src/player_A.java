@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 public class player_A extends eventListener {
     double x, y;
-
     player_A(int x, int y) {
         this.x = x;
         this.y = y;
@@ -14,8 +13,8 @@ public class player_A extends eventListener {
         gl.glBindTexture(GL.GL_TEXTURE_2D, textures[4]);
         gl.glPushMatrix();
         gl.glTranslated(x / (maxWidth / 2.0) - 0.9, y / (maxHeight / 2.0) - 0.9, 0);
-        gl.glScaled(0.075 * scale, 0.075*scale, 1);
-        //System.out.println(x +" " + y);
+        gl.glScaled(0.05 * scale, 0.05*scale*1000/700, 1);
+        //System.out.println(x +" " + y;
         gl.glBegin(GL.GL_QUADS);
         // Front Face
         gl.glTexCoord2f(0.0f, 0.0f);

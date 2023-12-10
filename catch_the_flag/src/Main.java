@@ -22,7 +22,7 @@ public class Main extends  JFrame {
         animator = new FPSAnimator(24);
         animator.add(glcanvas);
         animator.start();
-        setFocusable(true);//set focus for Listener
+        glcanvas.setFocusable(true);//set focus for Listener
         glcanvas.requestFocus();
         getContentPane().add(glcanvas, BorderLayout.CENTER);
         setSize(1000, 700);
