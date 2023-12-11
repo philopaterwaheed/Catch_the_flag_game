@@ -22,6 +22,5 @@ public class entityManager {
         if (e != null){
             e.destroy();
         }
-
     }
 }

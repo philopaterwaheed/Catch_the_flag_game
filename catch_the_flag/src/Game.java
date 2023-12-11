@@ -1,13 +1,16 @@
+
 import java.util.Random;
 
 public class Game {
-   static int playersX [] = {75 , 125};
-   static int playersY [] = {75 , 75};
-    public static String[] player1Textures = {"old//Balloon1.png","old//blueball.png"};
-    static int level=3 , fbs = 0 , maxWidth= 150 , maxHeight= 105   ;
-    static boolean running , won , lose  ;
+    static int playersX[] = {25, 125};
+    static int playersY[] = {50, 50};
+    public static String[] player1Textures = {"old//Balloon1.png", "old//Balloon1.png"};
+    static int level = 0, fbs = 0, maxWidth = 150, maxHeight = 105, displayChanged = 0;
     static Random random = new Random() ;
+    static boolean running, won, lose, sound = true;
+    static Music Mclick = new Music("sounds//soundEfects//Fruit collect 1.wav", false),
+            Eclick = new Music("sounds//soundEfects//Text 1.wav", false),
 
-
+    mainMusic = new Music("sounds//music//The Verdant Grove LOOP.wav", true);
 
 }

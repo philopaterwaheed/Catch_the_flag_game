@@ -10,7 +10,6 @@ import javax.sound.sampled.*;
         clip.open(audioInputStream);
 
     }
-
     public void play() { // play music
         if (clip != null) {
             clip.setFramePosition(0);
@@ -20,7 +19,6 @@ import javax.sound.sampled.*;
             clip.start();
         }
     }
-
     public void stop() { // stop music
         if (clip != null && clip.isRunning()) {
             clip.stop();

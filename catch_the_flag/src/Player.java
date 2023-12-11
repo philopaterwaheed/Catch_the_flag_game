@@ -1,3 +1,6 @@
+//<<<<<<< HEAD
+
+//=======
 import javax.media.opengl.GL;
 
 public class Player extends Entity {
@@ -43,3 +46,4 @@ public class Player extends Entity {
     }
 
 }
+
