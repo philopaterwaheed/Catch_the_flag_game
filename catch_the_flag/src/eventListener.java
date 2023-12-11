@@ -33,6 +33,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 
     Player[] players = new Player[2];
     AI[] BlueBalls = new AI[4];
+    flag flag ;
     static GL gl,gllevel;
     //    int xPosition = 50, yPosition = 60;
     int x = 5, y = 70;
@@ -42,18 +43,22 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
     public void init(GLAutoDrawable glAutoDrawable) {
         gl = glAutoDrawable.getGL();
         gl.glClearColor(1.5f, 0.5f, 0.5f, 0.0f);  // the color of the canvas ;
-        // init players
-
-        for (int i = 0; i < 2; i++) {
-            players[i] = new Player(Game.playersX[i], Game.playersY[i], true, Game.player1Textures, 1);
-            entityManager.addEntity(players[i]);
-        }
 
         // init blue balls
         for (int i = 0; i < 2 + Game.level; i++) {
             BlueBalls [i] = new AI(5+i*50,2, true, Game.player1Textures ,Game.maxWidth/((3+Game.level)*2),Game.maxHeight/((3+Game.level)*2) );
             entityManager.addEntity(BlueBalls[i]);
         }
+
+        // init players
+
+        for (int i = 0; i < 2; i++) {
+            players[i] = new Player(Game.playersX[i], Game.playersY[i], true, Game.player1Textures, 1, i);
+            entityManager.addEntity(players[i]);
+        }
+        //init flag
+        flag = new flag(6 ,52 , true , Game.redflagTextures, 2 , 1);
+        entityManager.addEntity(flag);
 
 
         gl.glMatrixMode(GL.GL_PROJECTION);
@@ -81,6 +86,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             }
         }
         //Start abanoub code=======================================================================================
+        // note no need to duplicate code that code is just right above you
         gllevel = glAutoDrawable.getGL();
         gllevel.glClearColor(1.5f, 0.5f, 0.5f, 0.0f); // the color of the canvas ;
         gllevel.glMatrixMode(GL.GL_PROJECTION);
@@ -108,9 +114,8 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
                 e.printStackTrace();
             }
         }
-        // philo code don't touch now
-//        player1 = new Player(1, 1, true, new String[]{"flag//flag animation1.png", "flag//flag animation2.png", "flag//flag animation3.png", "flag//flag animation4.png", "flag//flag animation5.png"});
-//        entityManager.addEntity(player1);
+
+
         for (Entity entity : entityManager.entities) {
             for (int i = 0; i < entity.texture.length; i++) {
                 try {
@@ -134,7 +139,6 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         }
         // end of philo code
 
-
     }
 
 
@@ -153,10 +157,10 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         entityManager.update();
         DrawExit(gllevel,scaleML);
         entityManager.render(gl);
-        DrawGoal(gl, 1);
         if (Game.fbs == 24)
             Game.fbs = 0;
-    }
+        }
+        System.out.println(collision.isColliding(players[0] , players[1]));
     }
 
     public void DrawBackground(GL gl) {
@@ -178,28 +182,9 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         gl.glDisable(GL.GL_BLEND);
     }
 
-    public void DrawGoal(GL gl, double scale) {
-        gl.glEnable(GL.GL_BLEND);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[3]);
-        gl.glPushMatrix();
-        gl.glTranslated(x / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
-        gl.glScaled(0.07 * scale, 0.07 * scale * 1000 / 700, 1);
-        //System.out.println(x +" " + y);
-        gl.glBegin(GL.GL_QUADS);
-        // Front Face
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glEnd();
-        gl.glPopMatrix();
-        gl.glDisable(GL.GL_BLEND);
-    }
+
     // Start abanoub code=================================================================================================
+
     public void DrawBackgroundlevel(GL gllevel) {
         gllevel.glEnable(GL.GL_BLEND);
         gllevel.glBindTexture(GL.GL_TEXTURE_2D, textureslevels[textureNameslevel.length-1]);    // Turn Blending On
@@ -315,6 +300,19 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         }
         if (isKeyPressed(KeyEvent.VK_UP)) {
             players[0].y++;
+        }
+        if (isKeyPressed(KeyEvent.VK_A)) {
+            players[1].x--;
+//            }
+        }
+        if (isKeyPressed(KeyEvent.VK_D)) {
+            players[1].x++;
+        }
+        if (isKeyPressed(KeyEvent.VK_S)) {
+            players[1].y--;
+        }
+        if (isKeyPressed(KeyEvent.VK_W)) {
+            players[1].y++;
         }
     }
 

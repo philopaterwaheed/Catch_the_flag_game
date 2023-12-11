@@ -1,21 +1,30 @@
 import javax.media.opengl.GL;
 
-public class Player extends Entity {
-    double scale  ;
-    int type ;
+public class flag extends Entity {
+    double scale ;
+    int frame = 0 , type = 0 ;
 
-    Player(int x, int y, boolean render, String[] texturesStrings , double scale , int type ) {
+    flag(int x, int y, boolean render, String[] texturesStrings , double scale  , int type ) {
+
         super(x, y, render, texturesStrings);
-        this.scale = scale ;
-        this.hitbox = new hitBox(x,y,scale);
-        this.type = type ;
+        this.scale = scale;
+        this.type = type  ;
+    }
+
+    @Override
+    public void update() {
+
+        frame ++ ;
+        if (frame >4 )
+            frame = 0 ;
+
     }
 
     @Override
     public void render(GL gl) {
-//        System.out.println(x+ " " + y);
+
         gl.glEnable(GL.GL_BLEND);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, this.textures[0]);
+        gl.glBindTexture(GL.GL_TEXTURE_2D, this.textures[frame]);
         gl.glPushMatrix();
         gl.glTranslated(x / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
         gl.glScaled(0.04 * scale, 0.04*scale*1000/700, 1);
@@ -36,17 +45,7 @@ public class Player extends Entity {
     }
 
     @Override
-    public void update() {
-        this.hitbox.x = x;
-        hitbox.y =y ;
-
-    }
-
-
-    @Override
     public void destroy() {
 
     }
-
-
 }
