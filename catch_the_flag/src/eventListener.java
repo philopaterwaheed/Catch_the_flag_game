@@ -10,6 +10,7 @@ import java.util.BitSet;
 
 public class eventListener extends AnimListener {
     int frame = 0;
+
     static int maxWidth = 150;//to use int class player
     static int maxHeight = 150;
     String[] textureNames = {"flag//flag animation1.png", "flag//flag animation2.png", "flag//flag animation3.png",
@@ -17,7 +18,7 @@ public class eventListener extends AnimListener {
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     int[] textures = new int[textureNames.length];
     Player[] players = new Player[2];
-    AI[] BlueBalls = new AI[4];
+    AI[] BlueBalls = new AI[12];
     static GL gl;
     //    int xPosition = 50, yPosition = 60;
     int x = 5, y = 70;
@@ -33,13 +34,22 @@ public class eventListener extends AnimListener {
             players[i] = new Player(Game.playersX[i], Game.playersY[i], true, Game.player1Textures, 1);
             entityManager.addEntity(players[i]);
         }
-
+        int p = Game.random.nextInt(0, 35);
         // init blue balls
-        for (int i = 0; i < 2 + Game.level; i++) {
-            BlueBalls [i] = new AI(5+i*50,2, true, Game.player1Textures ,Game.maxWidth/((3+Game.level)*2),Game.maxHeight/((3+Game.level)*2) );
-            entityManager.addEntity(BlueBalls[i]);
-        }
+        for (int k = 0; k < 4 + 2 * Game.level; k++) {
 
+            int rx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
+            int ry = 10 + (int) Math.random() * Game.maxHeight / (3 + Game.level);// 94
+            System.out.println(rx + " " + ry);
+
+            if(k%2==0){
+                p = Game.random.nextInt(0,35);
+            }
+            BlueBalls[k] = new AI(18+p%3*10, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, p % 4);
+
+            entityManager.addEntity(BlueBalls[k]);
+
+        }
 
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity(); // resets the identity of the matrix ;
