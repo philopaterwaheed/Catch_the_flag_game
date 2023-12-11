@@ -21,14 +21,14 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     int[] textures = new int[textureNames.length];
     //start abanoub code======================================================================
-    String[] textureNameslevel = {"old//Level1.png","old//Level2.png","old//Level3.png","old//R.png","old//BackGraoundLevel.png"};
+    String[] textureNameslevel = {"old//Level1.png","old//Level2.png","old//Level3.png","old//R.png","old//sound.png","old//mute.png","old//Back100.png"};
 
     TextureReader.Texture[] texturelevel = new TextureReader.Texture[textureNameslevel.length];
     int[] textureslevels = new int[textureNameslevel.length];
     int MXL=0,MYL=0;
     double scaleML=1;
     double Xchoose=0,Ychoose=0;
-    int displayChanged=1;
+ 
     //End abanoub code=======================================================================
 
     Player[] players = new Player[2];
@@ -143,20 +143,26 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         Game.fbs++;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
-        if (displayChanged == 1) {
+        if (Game.displayChanged == 1) {
             DrawBackgroundlevel(gllevel);
-            Drawlevel1(gllevel, scaleML);
+            Drawlevel1(gllevel, scaleML);}
+        else if (Game.displayChanged == 0) {
+            DrawBackground(gl);
+            handleKeyPress();
+            entityManager.update();
+            DrawEPS(gllevel, 0, 0, scaleML, 3);
+            entityManager.render(gl);
+            DrawGoal(gl, 1);
+            if (Game.fbs == 24)
+                Game.fbs = 0;
         }
-        else if(displayChanged == 0){
-        DrawBackground(gl);
-        handleKeyPress();
-        entityManager.update();
-        DrawExit(gllevel,scaleML);
-        entityManager.render(gl);
-        DrawGoal(gl, 1);
-        if (Game.fbs == 24)
-            Game.fbs = 0;
-    }
+        if (Game.sound) {
+        DrawEPS(gllevel, -1.78, 0.03, .8, 4);
+        }
+        else{
+            DrawEPS(gllevel, -1.78, 0.03, .9, 5);
+        }
+
     }
 
     public void DrawBackground(GL gl) {
@@ -247,14 +253,14 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             gllevel.glEnd();
             gllevel.glPopMatrix();
         }
-    }    public void DrawExit(GL gllevel,Double scale) {
+    }    public void DrawEPS(GL gllevel,double x1,double y1,Double scale,int index) {
         gllevel.glEnable(GL.GL_BLEND);
-        gllevel.glBindTexture(GL.GL_TEXTURE_2D, textureslevels[3]);    // Turn Blending On;
+        gllevel.glBindTexture(GL.GL_TEXTURE_2D, textureslevels[index]);    // Turn Blending On;
         gllevel.glPushMatrix();
-        gllevel.glTranslated(x / (maxWidth / 2.0)-0.97 , y / (maxHeight / 2.0)-.02 , 0);
-        if (Xchoose>0&&Xchoose<9&&Ychoose<100&&Ychoose>90&&displayChanged==0)
-            gllevel.glScaled(0.15 * scale, 0.15 * scale, 1);
-        else
+        gllevel.glTranslated(x / (maxWidth / 2.0)+(-0.97-x1) , y / (maxHeight / 2.0)-(0.02+y1) , 0);
+//        if (Xchoose>0&&Xchoose<9&&Ychoose<100&&Ychoose>90&&Game.displayChanged==0)
+//            gllevel.glScaled(0.15 * scale, 0.15 * scale, 1);
+//        else
             gllevel.glScaled(0.1 * scale, 0.1 * scale, 1);
         gllevel.glBegin(GL.GL_QUADS);
         gllevel.glTexCoord2f(0.0f, 0.0f);
@@ -268,7 +274,6 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         gllevel.glEnd();
         gllevel.glPopMatrix();
     }
-
 // End abanoub code=================================================================================================
 
 
@@ -326,31 +331,51 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
     @Override
     public void mouseClicked(MouseEvent e) {
         System.out.println(Xchoose+" "+Ychoose);
-        if (Xchoose>44&&Xchoose<58&&Ychoose<85&&Ychoose>74&&displayChanged==1) {
-            displayChanged = 0;
-            Game.Mclick.playMusic();
+        if (Xchoose>44&&Xchoose<58&&Ychoose<85&&Ychoose>74&&Game.displayChanged==1) {
+            Game.displayChanged = 0;
             Game.level=0;
+            if (Game.sound){
+                Game.Mclick.playMusic();
+            }
         }
-        else if (Xchoose>44&&Xchoose<58&&Ychoose<85-(1*20)&&Ychoose>74-(1*20)&&displayChanged==1)
+        else if (Xchoose>44&&Xchoose<58&&Ychoose<85-(1*20)&&Ychoose>74-(1*20)&&Game.displayChanged==1)
         {
-            displayChanged = 0;
-            Game.Mclick.playMusic();
+            Game.displayChanged = 0;
             Game.level=1;
+            if (Game.sound){
+                Game.Mclick.playMusic();
+            }
         }
-        else if (Xchoose>44&&Xchoose<58&&Ychoose<85-(2*20)&&Ychoose>74-(2*20)&&displayChanged==1)
-        {
-            displayChanged = 0;
-            Game.Mclick.playMusic();
+        else if (Xchoose>44&&Xchoose<58&&Ychoose<85-(2*20)&&Ychoose>74-(2*20)&&Game.displayChanged==1)
+        {   Game.displayChanged = 0;
             Game.level=2;
+            if (Game.sound){
+                Game.Mclick.playMusic();
+            }
         }
-        else if (Xchoose>44&&Xchoose<58&&Ychoose<85-(3*20)&&Ychoose>74-(3*20)&&displayChanged==1){
-            displayChanged=0;
+        else if (Xchoose>44&&Xchoose<58&&Ychoose<85-(3*20)&&Ychoose>74-(3*20)&&Game.displayChanged==1){
+            if (Game.sound){
             Game.Eclick.playMusic();
 
+            }
+
         }
-        else if (Xchoose>0&&Xchoose<9&&Ychoose<100&&Ychoose>90&&displayChanged==0) {
-            displayChanged = 1;
-            Game.Eclick.playMusic();
+        else if (Xchoose>0&&Xchoose<9&&Ychoose<100&&Ychoose>90&&Game.displayChanged==0) {
+           Game.displayChanged = 1;
+            if (Game.sound){
+               Game.Eclick.playMusic();
+            }
+        }
+        //On-Off Game.sound
+        if (Xchoose>89&&Xchoose<99&&Ychoose<99&&Ychoose>89) {
+           if (Game.sound){
+               Game.sound=false;
+               Game.mainMusic.stopMusic();
+           }
+           else{
+               Game.sound=true;
+               Game.mainMusic.playMusic();
+           }
         }
     }
     @Override
