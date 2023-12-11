@@ -6,17 +6,16 @@ public class AI extends Entity {
     String type;
     int lx, ly;
 
-    AI(int x, int y, boolean render, String[] texturesStrings ,int lx, int ly) {
+    AI(int x, int y, boolean render, String[] texturesStrings, int lx, int ly) {
         super(x, y, render, texturesStrings);
-        this.lx=lx;
-        this.ly=ly;
+        this.lx = lx;
+        this.ly = ly;
 
     }
 
     @Override
     public void update() {
         fps++;
-
         Zigzag();
     }
 
@@ -26,7 +25,7 @@ public class AI extends Entity {
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.textures[0]);
         gl.glPushMatrix();
         gl.glTranslated(x / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
-        gl.glScaled(0.04 , 0.04*10/7, 1);
+        gl.glScaled(0.04, 0.04 * 10 / 7, 1);
         //System.out.println(x +" " + y);
         gl.glBegin(GL.GL_QUADS);
         // Front Face
@@ -64,7 +63,7 @@ public class AI extends Entity {
             m = -m;
             v = 0;
         }
-        x+=d;
-        y+=m;
+        x += d;
+        y += m;
     }
 }
