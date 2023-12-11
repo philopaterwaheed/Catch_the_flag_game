@@ -37,24 +37,9 @@ public class Player extends Entity {
 
     }
 
-
     @Override
     public void destroy() {
 
     }
 
-//    @Override
-//    public void update() {
-//
-//    }
-//
-//    @Override
-//    public void render(GL gl) {
-//
-//    }
-//
-//    @Override
-//    public void destroy() {
-//
-//    }
 }
