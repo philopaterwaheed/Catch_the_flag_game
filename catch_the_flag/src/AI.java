@@ -9,7 +9,7 @@ public class AI extends Entity {
     int type;
     int lx, ly;
     double xd, yd;
-
+    boolean collider = true ;
     AI(int x, int y, boolean render, String[] texturesStrings, int lx, int ly, int t, int type) {
         super(x, y, render, texturesStrings);
         this.xog = x;
@@ -20,23 +20,28 @@ public class AI extends Entity {
         this.team = t;
         this.xd = x;
         this.yd = y;
+
     }
 
     @Override
     public void update() {
-        System.out.println(team);
-        if (type == 0) {
-            ly = 0;
-            Zigzag();
-        } else if (type == 1) {
-            Zigzag();
-        } else if (type == 2) {
-            lx = 0;
-            Zigzag();
-        } else if (type == 3) {
-            Zigzag();
+
+        if (render) {
+//            System.out.println(team);
+            if (type == 0) {
+                ly = 0;
+                Zigzag();
+            } else if (type == 1){
+                ellips();
+            }
+            else if (type == 2) {
+                lx = 0;
+                Zigzag();
+            } else if (type == 3) {
+                Zigzag();
+            }
+//            System.out.println(type + "UWU");
         }
-        System.out.println(ly + "UWU" + lx);
     }
 
     @Override
@@ -61,12 +66,12 @@ public class AI extends Entity {
             gl.glBindTexture(GL.GL_TEXTURE_2D, this.textures[team]);
             gl.glPushMatrix();
             if (team == 0) {
-                if (type != -1)
+                if (type != 1)
                     gl.glTranslated(x / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
                 else
                     gl.glTranslated(xd / (Game.maxWidth / 2.0) - 0.96, yd / (Game.maxHeight / 2.0) - 0.96, 0);
             } else {
-                if (type != -1)
+                if (type != 1)
                     gl.glTranslated((Game.maxWidth - x - 7) / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
                 else
                     gl.glTranslated((Game.maxWidth - xd - 7) / (Game.maxWidth / 2.0) - 0.96, yd / (Game.maxHeight / 2.0) - 0.96, 0);
@@ -98,7 +103,6 @@ public class AI extends Entity {
 
         int p = Game.random.nextInt(0, 35);
         // init blue balls
-        int remain = 12 - 4 + 2 * Game.level;
         for (int k = 0; k < 4 + 2 * Game.level; k++) {
 
             int rxx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
@@ -108,20 +112,27 @@ public class AI extends Entity {
                 p = Game.random.nextInt(0, 35);
             }
 
-//            Game.Ais[k] = new AI(18 + p % 3 * 10, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, p % 4);
-            System.out.println(Game.Ais[k].lx+"  "+ Game.Ais[k].ly);
-            Game.Ais[k].x = 18 + p % 3 * 10;
-            Game.Ais[k].y = 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level));
+
+//            Game.Ais[k] = new AI(18 + p % 3 * 10, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rxx, ryx, k % 2, p % 4);
+            Game.Ais[k].xd =Game.Ais[k].x = 18 + p % 3 * 10;
+            Game.Ais[k].yd =Game.Ais[k].y = 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level));
             Game.Ais[k].render = true;
-            Game.Ais[k].lx=20 + rxx;
+            Game.Ais[k].lx= 20 + rxx;
             Game.Ais[k].ly= ryx;
             Game.Ais[k].team = k%2;
             Game.Ais[k].type=p % 4;
          //   System.out.println(Arrays.asList(Game.Ais));
+            Game.Ais[k].h =0 ;
+            Game.Ais[k].v =0 ;
+            Game.Ais[k].m =1 ;
+            Game.Ais[k].d =1 ;
+
+
         }
         for (int i =  4 + 2 * Game.level ; i < 12 ; i++ )
         {
             Game.Ais[i].render = false;
+            Game.Ais[i].collider = false;
         }
 
     }
@@ -152,15 +163,15 @@ public class AI extends Entity {
     }
     double origin = 45;
 
-//    public void ellips() {
-//        double t = Math.PI / 180;
-//        origin += 2*t;
-//        xd = (((lx - 3) / 2) * (Math.cos(origin)) + (lx + x) / 2);
-//        yd = (((ly - 3) / 2) * (Math.sin(origin)) + (ly + y) / 2);
-//        if (origin == 2 * Math.PI) {
-//            origin = 0;
-//        }
-//
-//    }
+    public void ellips() {
+        double t = Math.PI / 180;
+        origin += 2*t;
+        xd = (((lx - 3) / 2) * (Math.cos(origin)) + (lx + x) / 2);
+        yd = (((ly - 3) / 2) * (Math.sin(origin)) + (ly + y) / 2);
+        if (origin == 2 * Math.PI) {
+            origin = 0;
+        }
+
+    }
 
 }

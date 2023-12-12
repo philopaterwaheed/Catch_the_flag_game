@@ -1,6 +1,7 @@
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.glu.GLU;
+import javax.swing.*;
 
 import Texture.TextureReader;
 
@@ -26,9 +27,10 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     int[] textures = new int[textureNames.length];
     //start abanoub code======================================================================
-    String[] textureNamesLevel = {"old//Level1.png", "old//Level2.png", "old//Level3.png", "old//R.png", "old//sound.png", "old//mute.png",
-            "old//Exit0.png", "old//pause.png", "old//information.png"
-            , "old//start.png", "old//Untitled.png", "old//Background.png", "old//Back100.png"};
+    String[] textureNamesLevel = {"old//Level1.png", "old//Level2.png", "old//Level3.png", "old//R.png", "old//sound.png",
+            "old//mute.png", "old//Exit0.png", "old//pause1.png", "old//information.png", "old//start.png"
+            , "old//Untitled.png", "old//singleP.png", "old//twoP.png", "old//menu.png ", "old//Home.png ",
+            "old//Resume.png ", "old//levels.png ", "old//Background.png", "old//Back100.png"};
 
 
     TextureReader.Texture[] texturelevel = new TextureReader.Texture[textureNamesLevel.length];
@@ -40,9 +42,8 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
     Player[] players = new Player[2];
     AI[] BlueBalls = new AI[12];
 
-    static GL  gl ,gllevel;
+    static GL gl, gllevel;
 
-    flag flag;
     background back;
     int x = 5, y = 70;
 
@@ -54,6 +55,12 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         //init background
         back = new background(0, 0, true, Game.backTextures);
         entityManager.addEntity(back);
+        // init flag
+        for (int i = 0; i < 2; i++) {
+
+            Game.flags[i] = new flag(15 + (134 * i - 10), 52, true, Game.flagTexture, 1, i != 0);
+            entityManager.addEntity(Game.flags[i]);
+        }
         // init players
 
         for (int i = 0; i < 2; i++) {
@@ -70,7 +77,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 
             int rx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
             int ry = 10 + (int) Math.random() * Game.maxHeight / (3 + Game.level);// 94
-            System.out.println(rx + " " + ry);
+//            System.out.println(rx + " " + ry);
             Game.Ais[k] = new AI(18, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, 1);
 
             entityManager.addEntity(Game.Ais[k]);
@@ -124,7 +131,8 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             for (int i = 0; i < entity.texture.length; i++) {
                 try {
                     entity.texture[i] = TextureReader.readTexture(assetsFolderName + "//" + entity.Textures.get(i), true);
-                    gl.glBindTexture(GL.GL_TEXTURE_2D, entity.textures[i]);
+
+                    gllevel.glBindTexture(GL.GL_TEXTURE_2D, entity.textures[i]);
 
                     //                mipmapsFromPNG(gl, new GLU(), texture[i]);
                     new GLU().gluBuild2DMipmaps(
@@ -142,6 +150,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             }
         }
         // end of philo code
+
     }
 
     public void mmmm() {
@@ -174,41 +183,54 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 //>>>>>>> 97c3786bda90aa1f339d08ab19c4fa7b1c136186
         gllevel.glClear(GL.GL_COLOR_BUFFER_BIT);
         gllevel.glLoadIdentity();
-        if (Game.displayChanged == 0) {
-            DrawBackgroundlevel(gllevel, textureNamesLevel.length - 2);
-            DrawEPS(gllevel, -0.9, 0.3, 1.5, 9);
-            DrawEPS(gllevel, -0.9, 0.7, 1.5, 8);
-            DrawEPS(gllevel, -0.9, 1.1, 1.5, 6);
-
-        }
         if (Game.displayChanged == -1) {
             DrawBackgroundlevel(gllevel, 10);
             DrawEPS(gllevel, 0, 0, scaleML, 3);
-        }
-        if (Game.displayChanged == 2) {
+        } else if (Game.displayChanged == 0) {
+            DrawBackgroundlevel(gllevel, textureNamesLevel.length - 2);
+            DrawEPS(gllevel, -0.9, 0.3, 1.5, 9);
+            DrawEPS(gllevel, -0.9, 0.7, 1.5, 8);
+            DrawEPS(gllevel, -0.9, 1.1, 1.3, 6);
+        } else if (Game.displayChanged == 1) {
+            DrawBackgroundlevel(gllevel, textureNamesLevel.length - 2);
+            DrawEPS(gllevel, -0.9, 0.3, 1.5, 11);
+            DrawEPS(gllevel, -0.9, 0.7, 1.6, 12);
+            DrawEPS(gllevel, -0.9, 1.1, 1.45, 3);
+        } else if (Game.displayChanged == 2) {
             DrawBackgroundlevel(gllevel, textureNamesLevel.length - 1);
             Drawlevel1(gllevel, scaleML);
         } else if (Game.displayChanged == 3) {
             handleKeyPress();
             entityManager.update();
-            DrawEPS(gllevel, 0, 0, scaleML, 3);
-            DrawEPS(gllevel, -1.5, 0, scaleML, 7);
             entityManager.render(gllevel);
-            gl.glColor3f(0.0f, 0.0f, 1f);
-            score1.drawScore(gl, -0.95f, -0.99f, "RedScore: ");
-            score2.drawScore(gl, 0.7f, -0.98f, "BlueScore: ");
-            gl.glColor3f(1, 1, 1);
-            if (Game.fbs == 24)
+            gl.glColor3f(1f, 1f, 1f);
+            score1.drawScore(gl, -0.95f, -0.98f, Game.name1 + " RedScore: ");
+            score2.drawScore(gl, 0.55f, -0.98f, Game.name2 + " BlueScore: ");
+//            gl.glColor3f(1, 1, 1);
+            if (Game.fbs == 24) {
                 Game.fbs = 0;
-            DrawEPS(gllevel, 0, 0, scaleML, 3);
-            DrawEPS(gllevel, -1.5, 0, scaleML, 7);
+                if (collision.isColliding(Game.players[0], Game.flags[1]))
+                    System.out.println(Game.flags[1].x);
+            }
+            DrawEPS(gllevel, 0, 0, .6, 7);
+        } else if (Game.displayChanged == 4) {
+            DrawBackgroundlevel(gllevel, textureNamesLevel.length - 1);
+            DrawEPS(gllevel, -0.9, 0.3, 1.5, 14);
+            DrawEPS(gllevel, -0.9, 0.7, 1.6, 15);
+            DrawEPS(gllevel, -0.9, 1.1, 1.7, 16);
+            DrawEPS(gllevel, -0.9, 1.5, 1.48, 3);
+
         }
-        if (Game.sound) {
+
+        if (Game.sound && Game.displayChanged != 3) {
             DrawEPS(gllevel, -1.78, 0.03, .4, 4);
-        } else {
+        } else if (Game.displayChanged != 3) {
             DrawEPS(gllevel, -1.78, 0.03, .5, 5);
         }
-        System.out.println(Game.level);
+
+        System.out.println(Game.name1);
+        System.out.println(Game.name2);
+//        System.out.println(Game.level);
     }
 
     // Start abanoub code=================================================================================================
@@ -349,18 +371,20 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         if (isKeyPressed(KeyEvent.VK_UP)) {
             Game.players[1].y++;
         }
-        if (isKeyPressed(KeyEvent.VK_A)) {
-            Game.players[0].x--;
-//            }
-        }
-        if (isKeyPressed(KeyEvent.VK_D)) {
-            Game.players[0].x++;
-        }
-        if (isKeyPressed(KeyEvent.VK_S)) {
-            Game.players[0].y--;
-        }
-        if (isKeyPressed(KeyEvent.VK_W)) {
-            Game.players[0].y++;
+
+        if (Game.numofplayer != 1) {////////////////////////////////////////////////////////////////
+            if (isKeyPressed(KeyEvent.VK_A)) {
+                Game.players[0].x--;
+            }
+            if (isKeyPressed(KeyEvent.VK_D)) {
+                Game.players[0].x++;
+            }
+            if (isKeyPressed(KeyEvent.VK_S)) {
+                Game.players[0].y--;
+            }
+            if (isKeyPressed(KeyEvent.VK_W)) {
+                Game.players[0].y++;
+            }
         }
 
     }
@@ -372,7 +396,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println(Xchoose + " " + Ychoose);
+//        System.out.println(Xchoose + " " + Ychoose);
         if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 && Ychoose > 74 && Game.displayChanged == 2) {
             Game.displayChanged = 3;
             Game.level = 1;
@@ -395,12 +419,12 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
                 Game.Mclick.playMusic();
             }
         } else if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 - (3 * 20) && Ychoose > 74 - (3 * 20) && Game.displayChanged == 2) { // exit inside the level screen
+            Game.displayChanged = 1;
             if (Game.sound) {
                 Game.Eclick.playMusic();
             }
-            Game.displayChanged = 0;
         } else if (Xchoose > 0 && Xchoose < 9 && Ychoose < 100 && Ychoose > 90 && Game.displayChanged == 3) { // the exit inside the level
-            Game.displayChanged = 2;
+            Game.displayChanged = 4;
             if (Game.sound) {
 
                 Game.Eclick.playMusic();
@@ -410,23 +434,70 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             if (Game.sound) {
                 Game.Eclick.playMusic();
             }
-        }
-        if (Xchoose > 41 && Xchoose < 59 && Ychoose < 86 && Ychoose > 74 && Game.displayChanged == 0) {
-            Game.displayChanged = 2;
+        } else if (Xchoose > 41 && Xchoose < 59 && Ychoose < 86 && Ychoose > 74 && Game.displayChanged == 0) {
+            Game.displayChanged = 1;
             if (Game.sound) {
-                Game.Eclick.playMusic();
+                Game.Mclick.playMusic();
             }
         } else if (Xchoose > 41 && Xchoose < 59 && Ychoose < 67 && Ychoose > 55 && Game.displayChanged == 0) {
             Game.displayChanged = -1;
             if (Game.sound) {
-                Game.Eclick.playMusic();
+                Game.Mclick.playMusic();
             }
         } else if (Xchoose > 41 && Xchoose < 59 && Ychoose < 47 && Ychoose > 35 && Game.displayChanged == 0) {
             System.exit(0);
+        } else if (Xchoose > 41 && Xchoose < 59 && Ychoose < 86 && Ychoose > 74 && Game.displayChanged == 1) {
+            Game.displayChanged = 2;
+
+            Game.name1 = JOptionPane.showInputDialog(null, "Enter the name player: ", "player");
+            Game.name2 = "Computer";
+            Game.numofplayer = 1;
+            if (Game.sound) {
+                Game.Mclick.playMusic();
+            }
+        } else if (Xchoose > 41 && Xchoose < 59 && Ychoose < 67 && Ychoose > 55 && Game.displayChanged == 1) {
+            Game.displayChanged = 2;
+            Game.numofplayer = 2;
+            Game.name1 = JOptionPane.showInputDialog(null, "Enter the name player1: ", "player1");
+            Game.name2 = JOptionPane.showInputDialog(null, "Enter the name player2: ", "player2");
+            if (Game.sound) {
+                Game.Mclick.playMusic();
+            }
+        } else if (Xchoose > 41 && Xchoose < 59 && Ychoose < 47 && Ychoose > 35 && Game.displayChanged == 1) {
+            Game.displayChanged = 0;
+            if (Game.sound) {
+                Game.Eclick.playMusic();
+            }
+        } else if (Xchoose > 40 && Xchoose < 56 && Ychoose < 86 && Ychoose > 76 && Game.displayChanged == 4) {
+            Game.displayChanged = 0;
+            entityManager.reinitializeEntities();
+            if (Game.sound) {
+                Game.Mclick.playMusic();
+            }
+        } else if (Xchoose > 40 && Xchoose < 56 && Ychoose < 86 - (1 * 20) && Ychoose > 76 - (1 * 20) && Game.displayChanged == 4) {
+            Game.displayChanged = 3;
+            Game.numofplayer = Game.displayChanged;
+            entityManager.reinitializeEntities();
+            if (Game.sound) {
+                Game.Mclick.playMusic();
+            }
+        } else if (Xchoose > 40 && Xchoose < 56 && Ychoose < 86 - (2 * 20) && Ychoose > 76 - (2 * 20) && Game.displayChanged == 4) {
+            Game.displayChanged = 2;
+            entityManager.reinitializeEntities();
+            if (Game.sound) {
+                Game.Mclick.playMusic();
+            }
+        } else if (Xchoose > 40 && Xchoose < 56 && Ychoose < 86 - (3 * 20) && Ychoose > 76 - (3 * 20) && Game.displayChanged == 4) { // exit inside the level screen
+            Game.displayChanged = 3;
+            entityManager.reinitializeEntities();
+            if (Game.sound) {
+                Game.Mclick.playMusic();
+            }
         }
 
+
         //On-Off Game.sound
-        if (Xchoose > 89 && Xchoose < 99 && Ychoose < 99 && Ychoose > 89) {
+        if (Xchoose > 89 && Xchoose < 99 && Ychoose < 99 && Ychoose > 89 && Game.displayChanged != 3) {
             if (Game.sound) {
                 Game.sound = false;
                 Game.mainMusic.stopMusic();
@@ -436,6 +507,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             }
         }
     }
+
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -473,7 +545,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 
         Xchoose = ((x / wid) * 100);
         Ychoose = 100 - ((y / hi) * 100);
-//        System.out.println(Xchoose+"      "+Ychoose);
+//        System.out.println(Xchoose+"    "+Ychoose);
 
     }
 }
