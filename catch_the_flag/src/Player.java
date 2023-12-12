@@ -4,7 +4,9 @@
 import javax.media.opengl.GL;
 
 public class Player extends Entity {
+    public boolean hasFlag = false ;
     double scale  ;
+    int score = 0 ;
     boolean team ;
     int ogx, ogy , frame = 0;
 
@@ -45,6 +47,7 @@ public class Player extends Entity {
 
     @Override
     public void update() {
+        System.out.println(score);
         if (x < Game.rightXBound)
             x = Game.rightXBound;
         if (x > Game.leftXBound)
@@ -55,6 +58,43 @@ public class Player extends Entity {
             y = Game.downYBound;
         this.hitbox.x = x;
         hitbox.y =y ;
+        if ( hasFlag)
+        {
+         if (!team )
+            frame = 2 ;
+        if (team )
+                frame = 3 ;
+            if (!team && x < 75) {
+                score+=10;
+                Game.flags[1].render = true;
+                Game.flags[1].collide = true;
+                hasFlag = false ;
+            }
+            else if (team && x >75)
+            {
+
+                score+=10;
+                Game.flags[0].render = true;
+                hasFlag = false ;
+                Game.flags[0].collide = true;
+
+            }
+
+        }
+        else  {
+            if (!team)
+                Game.flags[1].render = true;
+            else
+                Game.flags[0].render = true ;
+            if (!team )
+                frame = 0 ;
+            else
+                frame = 1 ;
+        }
+
+
+
+
     }
 
     @Override
@@ -67,6 +107,7 @@ public class Player extends Entity {
             Game.players[i].x = Game.playersX[i];
             Game.players[i].y = Game.playersY[i];
             Game.players[i].team = i !=0;
+            Game.players[i].score = 0;
         }
 
     }

@@ -182,6 +182,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         }
         else if (Game.displayChanged == 3) {
             handleKeyPress();
+
             entityManager.update();
             entityManager.render(gllevel);
             gl.glColor3f(1f, 1f, 1f);
@@ -190,9 +191,61 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 //            gl.glColor3f(1, 1, 1);
             if (Game.fbs == 24) {
                 Game.fbs = 0;
-                if (collision.isColliding(Game.players[0], Game.flags[1]))
-                    System.out.println(Game.flags[1].x);
-        }
+            }
+            if (collision.isColliding(Game.players[0], Game.flags[1]) && Game.flags[1].collide) {
+                Game.players[0].hasFlag = true;
+                Game.flags[1].collide = false ;
+                Game.flags[1].render = false ;
+            }
+            if (collision.isColliding(Game.players[1], Game.flags[0]) && Game.flags[0].collide) {
+                Game.players[1].hasFlag = true;
+                Game.flags[0].collide = false ;
+                Game.flags[0].render = false ;
+            }
+            if (collision.isColliding(Game.players[1], Game.players[0])) {
+                if (Game.players[1].hasFlag) {
+                    Game.players[1].hasFlag = false;
+                    Game.flags[0].collide = true;
+                    Game.flags[0].render = true;
+                }
+                if (Game.players[0].hasFlag) {
+                    Game.players[0].hasFlag = false;
+                    Game.flags[1].collide = true;
+                    Game.flags[1].render = true;
+                }
+            }
+            for (AI ai : Game.Ais)
+            {
+                if (((Game.players[0].team)? 1 : 0) != ai.team){
+                   if (collision.isColliding(Game.players[0],ai ))
+                    {
+                        System.out.println("colliding");
+                        if (Game.players[0].hasFlag) {
+                            Game.players[0].hasFlag = false;
+                            Game.flags[1].collide = true;
+                            Game.flags[1].render = true;
+                        }
+
+                    }
+                }
+                if (((Game.players[1].team)? 1 : 0) != ai.team){
+                    if (collision.isColliding(Game.players[1],ai ))
+                    {
+                        if (Game.players[1].hasFlag) {
+                            Game.players[1].hasFlag = false;
+                            Game.flags[0].collide = true;
+                            Game.flags[0].render = true;
+                        }
+
+                    }
+                }
+//                if (collision.isColliding(Game.players[1],ai ))
+//                {
+//                    System.out.println("colliding " + ai.team);
+//                }
+            }
+            entityManager.update();
+
             DrawEPS(gllevel, 0, 0, .6, 7);
         }
             else if (Game.displayChanged == 4) {

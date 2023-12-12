@@ -38,8 +38,23 @@ public class AI extends Entity {
                 Zigzag();
             }
 //            System.out.println(type + "UWU");
+            if (team == 0 ){
+            this.hitbox.x = x;
+            hitbox.y =y ;
+            hitbox.width = 0.04 *150;
+            }
+            else
+            {
+                this.hitbox.x = Game.maxWidth-x-7;
+                hitbox.y =y ;
+                hitbox.width = 0.04 *150;}
+
+            }
+            if (team == 1)
+                System.out.println(this.hitbox.x + " " + x);
         }
-    }
+
+
 
     @Override
     public void render(GL gl) {
