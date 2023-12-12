@@ -9,6 +9,7 @@ public class Player extends Entity {
     int score = 0 ;
     boolean team ;
     int ogx, ogy , frame = 0;
+    boolean ai = false;
 
     Player(int x, int y, boolean render, String[] texturesStrings , double scale , boolean team ){
         super(x, y, render, texturesStrings);
@@ -47,6 +48,7 @@ public class Player extends Entity {
 
     @Override
     public void update() {
+        if (this.ai) SinglePlayer();
         System.out.println(score);
         if (x < Game.rightXBound)
             x = Game.rightXBound;
@@ -64,19 +66,24 @@ public class Player extends Entity {
             frame = 2 ;
         if (team )
                 frame = 3 ;
-            if (!team && x < 75) {
+            if (!team && x < 70) {
                 score+=10;
                 Game.flags[1].render = true;
                 Game.flags[1].collide = true;
+                Game.score1.score= score;
+
                 hasFlag = false ;
             }
-            else if (team && x >75)
+            else if (team && x >70)
             {
 
                 score+=10;
                 Game.flags[0].render = true;
                 hasFlag = false ;
                 Game.flags[0].collide = true;
+                Game.score2.score= score;
+                if (Game.numofplayer == 1)
+                    Game.score = score;
 
             }
 
@@ -109,8 +116,24 @@ public class Player extends Entity {
             Game.players[i].team = i !=0;
             Game.players[i].score = 0;
         }
+        if (Game.numofplayer == 1) {
+            Game.players[0].ai = true;
+        } else Game.players[0].ai = false;
+        Game.score1.score =0 ; ;
+        Game.score2.score = 0;
 
     }
-
+    public void SinglePlayer() {
+        int orX = Game.players[1].x - Game.players[0].x;
+        int orY = Game.players[1].y - Game.players[0].y;
+        int absX = Math.abs(orX);
+        int absY = Math.abs(orY);
+        if (absX >= absY && orX != 0) {
+            this.x += orX / absX;
+        }
+        if (absX < absY && orY != 0)
+            this.y += orY / absY;
+        System.out.println("           "+ x + " " + y);
+    }
 }
 
