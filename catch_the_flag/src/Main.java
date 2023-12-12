@@ -16,7 +16,7 @@ public class Main extends  JFrame {
 
     eventListener listener = new eventListener();
     public Main(){
-        Game.mainMusic.playMusic();
+//        Game.mainMusic.playMusic();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         glcanvas = new GLCanvas();
         glcanvas.addGLEventListener(listener);

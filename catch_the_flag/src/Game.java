@@ -1,4 +1,3 @@
-
 import java.util.Random;
 
 public class Game {
@@ -10,7 +9,5 @@ public class Game {
     static boolean running, won, lose, sound = true;
     static Music Mclick = new Music("sounds//soundEfects//Fruit collect 1.wav", false),
             Eclick = new Music("sounds//soundEfects//Text 1.wav", false),
-
     mainMusic = new Music("sounds//music//The Verdant Grove LOOP.wav", true);
-
 }

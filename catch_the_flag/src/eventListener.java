@@ -29,17 +29,14 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
     double scaleML = 1;
     double Xchoose = 0, Ychoose = 0;
 
-
     Player[] players = new Player[2];
     AI[] BlueBalls = new AI[12];
-
 
     static GL  gl ,gllevel;
     int x = 5, y = 70;
 
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
-
 
         gl = glAutoDrawable.getGL();
         gl.glClearColor(1.5f, 0.5f, 0.5f, 0.0f);  // the color of the canvas ;
@@ -49,7 +46,6 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             players[i] = new Player(Game.playersX[i], Game.playersY[i], true, Game.player1Textures, 1);
             entityManager.addEntity(players[i]);
         }
-
 
         gllevel = glAutoDrawable.getGL();
         gllevel.glClearColor(1.5f, 0.5f, 0.5f, 0.0f); // the color of the canvas ;
@@ -98,8 +94,6 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             }
         }
         // end of philo code
-
-
     }
 
     public void mmmm () {
@@ -107,26 +101,20 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         int p = Game.random.nextInt(0, 35);
         // init blue balls
         for (int k = 0; k < 4 + 2 * Game.level; k++) {
-
-            int rx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
-            int ry = 10 + (int) Math.random() * Game.maxHeight / (3 + Game.level);// 94
+            int rx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);  // 140
+            int ry = 10 + (int) Math.random() * Game.maxHeight / (3 + Game.level);  // 94
             System.out.println(rx + " " + ry);
-
             if (k % 2 == 0) {
                 p = Game.random.nextInt(0, 35);
             }
             BlueBalls[k] = new AI(18 + p % 3 * 10, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, p % 4);
-
             entityManager.addEntity(BlueBalls[k]);
-
         }
     }
 
 
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
-
-
         Game.fbs++;
         gllevel.glClear(GL.GL_COLOR_BUFFER_BIT);
         gllevel.glLoadIdentity();
@@ -372,7 +360,6 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
                 Game.mainMusic.playMusic();
             }
         }
-
     }
 
     @Override

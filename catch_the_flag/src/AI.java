@@ -27,9 +27,9 @@ public class AI extends Entity {
         if (type == 0) {
             ly = 0;
             Zigzag();
-        } else if (type == 1)
-            Zigzag();
-        else if (type == 2) {
+        } else if (type == 1) {
+            ellips();
+        } else if (type == 2) {
             lx = 0;
             Zigzag();
         } else if (type == 3) {
@@ -42,13 +42,13 @@ public class AI extends Entity {
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.textures[team]);
         gl.glPushMatrix();
-        if (team==0) {
-            if (type != -1)
+        if (team == 0) {
+            if (type != 1)
                 gl.glTranslated(x / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
             else
                 gl.glTranslated(xd / (Game.maxWidth / 2.0) - 0.96, yd / (Game.maxHeight / 2.0) - 0.96, 0);
         } else {
-            if (type != -1)
+            if (type != 1)
                 gl.glTranslated((Game.maxWidth - x - 7) / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
             else
                 gl.glTranslated((Game.maxWidth - xd - 7) / (Game.maxWidth / 2.0) - 0.96, yd / (Game.maxHeight / 2.0) - 0.96, 0);
@@ -99,17 +99,17 @@ public class AI extends Entity {
         y += m;
     }
 
-    double origin = 0;
+    double origin = 45;
 
-//    public void ellips() {
-//        double t = Math.PI / 180;
-//        origin += t;
-//        xd = ((lx / 2) * (Math.cos(origin)) + (lx + xd) / 2);
-//        yd = ((ly / 2) * (Math.sin(origin)) + (ly + yd) / 2);
-////        if (origin == 2 * Math.PI) {
-////            origin = 0;
-////        }
-//
-//    }
+    public void ellips() {
+        double t = Math.PI / 180;
+        origin += 2*t;
+        xd = (((lx - 3) / 2) * (Math.cos(origin)) + (lx + x) / 2);
+        yd = (((ly - 3) / 2) * (Math.sin(origin)) + (ly + y) / 2);
+        if (origin == 2 * Math.PI) {
+            origin = 0;
+        }
+
+    }
 
 }
