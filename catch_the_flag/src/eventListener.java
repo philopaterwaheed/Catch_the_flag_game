@@ -14,80 +14,85 @@ import java.util.BitSet;
 
 public class eventListener extends AnimListener implements MouseMotionListener, MouseListener {
     int frame = 0;
+
     static int maxWidth = 150;//to use int class player
     static int maxHeight = 150;
-    String[] textureNames = {"flag//flag animation1.png", "flag//flag animation2.png", "flag//flag animation3.png",
-            "old//redflagbb.png", "old//Balloon1.png", "flag//flag animation4.png", "flag//flag animation5.png", "old//Back.png"};
-    TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
-    int[] textures = new int[textureNames.length];
-    //start abanoub code======================================================================
+
     String[] textureNamesLevel = {"old//Level1.png", "old//Level2.png", "old//Level3.png", "old//R.png", "old//sound.png", "old//mute.png",
-                "old//Exit0.png", "old//pause.png","old//information.png" ,"old//start.png","old//Background.png", "old//Back100.png"};
+            "old//Exit0.png", "old//pause.png", "old//information.png"
+            , "old//start.png", "old//Untitled.png", "old//Background.png", "old//Back100.png"};
 
 
     TextureReader.Texture[] texturelevel = new TextureReader.Texture[textureNamesLevel.length];
     int[] textureslevels = new int[textureNamesLevel.length];
-    int MXL = 0, MYL = 0;
+        int MXL = 0, MYL = 0, infIndex = 0;
     double scaleML = 1;
     double Xchoose = 0, Ychoose = 0;
 
-    //End abanoub code=======================================================================
 
-    Player[] players = new Player[2];
-    AI[] BlueBalls = new AI[4];
-    static GL gl, gllevel;
-    //    int xPosition = 50, yPosition = 60;
+    flag flag ;
+    background back ;
+
+
+    static GL  gl ,gllevel;
     int x = 5, y = 70;
-//    int x_Update = 0, y_Update = 0;
 
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
+
+
         gl = glAutoDrawable.getGL();
         gl.glClearColor(1.5f, 0.5f, 0.5f, 0.0f);  // the color of the canvas ;
+        //init background
+        back= new background(0,0,true,Game.backTextures);
+        entityManager.addEntity(back);
         // init players
 
         for (int i = 0; i < 2; i++) {
-            players[i] = new Player(Game.playersX[i], Game.playersY[i], true, Game.player1Textures, 1);
-            entityManager.addEntity(players[i]);
+            Game.players[i] = new Player(Game.playersX[i], Game.playersY[i], false, Game.player1Textures, 1, i != 0);
         }
 
-        // init blue balls
-        for (int i = 0; i < 2 + Game.level; i++) {
-            BlueBalls[i] = new AI(5 + i * 50, 2, true, Game.player1Textures, Game.maxWidth / ((3 + Game.level) * 2), Game.maxHeight / ((3 + Game.level) * 2));
-            entityManager.addEntity(BlueBalls[i]);
+        // init players
+
+        for (int i = 0; i < 2; i++) {
+            Game.players[i] = new Player(Game.playersX[i], Game.playersY[i], true, Game.player1Textures, 1, i != 0);
+            entityManager.addEntity(Game.players[i]);
+        }
+        for (int k = 0; k < 12 ; k++) {
+
+            int rx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
+            int ry = 10 + (int) Math.random() * Game.maxHeight / (3 + Game.level);// 94
+            System.out.println(rx + " " + ry);
+            Game.Ais[k] = new AI(18 , 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, 1);
+
+            entityManager.addEntity(Game.Ais[k]);
+
         }
 
 
-        gl.glMatrixMode(GL.GL_PROJECTION);
-        gl.glLoadIdentity(); // resets the identity of the matrix ;
-        gl.glOrtho(0.0, Game.maxWidth, 0.0, Game.maxHeight, -1, 1); // is not need to easy
-        gl.glEnable(GL.GL_TEXTURE_2D);  // Enable Texture Mapping
-        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-        gl.glGenTextures(textureNames.length, textures, 0);
-        for (int i = 0; i < textureNames.length; i++) {
-            try {
-                texture[i] = TextureReader.readTexture(assetsFolderName + "//" + textureNames[i], true);
-                gl.glBindTexture(GL.GL_TEXTURE_2D, textures[i]);
-//                mipmapsFromPNG(gl, new GLU(), texture[i]);
-                new GLU().gluBuild2DMipmaps(
-                        GL.GL_TEXTURE_2D,
-                        GL.GL_RGBA, // Internal Texel Format,
-                        texture[i].getWidth(), texture[i].getHeight(),
-                        GL.GL_RGBA, // External format from image,
-                        GL.GL_UNSIGNED_BYTE,
-                        texture[i].getPixels() // Image_data
-                );
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        //Start abanoub code=======================================================================================
+//        int p = Game.random.nextInt(0, 35);
+//        // init blue balls
+//        for (int k = 0; k < 4 + 2 * Game.level; k++) {
+//
+//            int rx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
+//            int ry = 10 + (int) Math.random() * Game.maxHeight / (3 + Game.level);// 94
+//            System.out.println(rx + " " + ry);
+//
+//            if (k % 2 == 0) {
+//                p = Game.random.nextInt(0, 35);
+//            }
+//            Game.Ais[k] = new AI(18 + p % 3 * 10, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, p % 4);
+//
+//
+//        }
+
+        AI.reInit();
+
         gllevel = glAutoDrawable.getGL();
         gllevel.glClearColor(1.5f, 0.5f, 0.5f, 0.0f); // the color of the canvas ;
         gllevel.glMatrixMode(GL.GL_PROJECTION);
         gllevel.glLoadIdentity(); // resets the identity of the matrix ;
-        gllevel.glOrtho(0.0, 100.0, 0.0, 100.0, -1, 1); // is not need to easy
+        gllevel.glOrtho(0.0, 100.0, 0.0, 100, -1, 1); // is not need to easy
         gllevel.glEnable(GL.GL_TEXTURE_2D);  // Enable Texture Mapping
         gllevel.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
         gllevel.glGenTextures(textureNamesLevel.length, textureslevels, 0);
@@ -134,80 +139,52 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 
     }
 
+    public void mmmm () {
+
+
+    }
+
 
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
-        Game.fbs++;
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-        gl.glLoadIdentity();
+
+
+        Game.fbs++; // per frame ;
+
+
+        gllevel.glClear(GL.GL_COLOR_BUFFER_BIT);
+        gllevel.glLoadIdentity();
         if (Game.displayChanged == 0) {
             DrawBackgroundlevel(gllevel, textureNamesLevel.length - 2);
-            DrawEPS(gl, -0.9, 0.3, 1.5, 9);
-            DrawEPS(gl, -0.9, 0.7, 1.5, 8);
-            DrawEPS(gl, -0.9, 1.1, 1.5, 6);
+            DrawEPS(gllevel, -0.9, 0.3, 1.5, 9);
+            DrawEPS(gllevel, -0.9, 0.7, 1.5, 8);
+            DrawEPS(gllevel, -0.9, 1.1, 1.5, 6);
+
+        }
+        if (Game.displayChanged == -1) {
+            DrawBackgroundlevel(gllevel, 10);
+            DrawEPS(gllevel, 0, 0, scaleML, 3);
         }
         if (Game.displayChanged == 2) {
             DrawBackgroundlevel(gllevel, textureNamesLevel.length - 1);
             Drawlevel1(gllevel, scaleML);
         } else if (Game.displayChanged == 3) {
-            DrawBackground(gl);
             handleKeyPress();
             entityManager.update();
-            DrawEPS(gllevel, 0, 0, scaleML, 3);
-            DrawEPS(gllevel, -1.5, 0, scaleML, 7);
-            entityManager.render(gl);
-            DrawGoal(gl, 1);
+            entityManager.render(gllevel);
+
             if (Game.fbs == 24)
                 Game.fbs = 0;
+
+            DrawEPS(gllevel, 0, 0, scaleML, 3);
+            DrawEPS(gllevel, -1.5, 0, scaleML, 7);
         }
         if (Game.sound) {
-            DrawEPS(gllevel, -1.78, 0.03, .8, 4);
+            DrawEPS(gllevel, -1.78, 0.03, .4, 4);
         } else {
-            DrawEPS(gllevel, -1.78, 0.03, .9, 5);
+            DrawEPS(gllevel, -1.78, 0.03, .5, 5);
         }
-
-    }
-
-    public void DrawBackground(GL gl) {
-        gl.glEnable(GL.GL_BLEND);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[textureNames.length - 1]);    // Turn Blending On
-        gl.glPushMatrix();
-        gl.glBegin(GL.GL_QUADS);
-        // Front Face
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glEnd();
-        gl.glPopMatrix();
-        gl.glDisable(GL.GL_BLEND);
-    }
-
-
-    public void DrawGoal(GL gl, double scale) {
-        gl.glEnable(GL.GL_BLEND);
-        gl.glBindTexture(GL.GL_TEXTURE_2D, textures[3]);
-        gl.glPushMatrix();
-        gl.glTranslated(x / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
-        gl.glScaled(0.07 * scale, 0.07 * scale * 1000 / 700, 1);
-        //System.out.println(x +" " + y);
-        gl.glBegin(GL.GL_QUADS);
-        // Front Face
-        gl.glTexCoord2f(0.0f, 0.0f);
-        gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 0.0f);
-        gl.glVertex3f(1.0f, -1.0f, -1.0f);
-        gl.glTexCoord2f(1.0f, 1.0f);
-        gl.glVertex3f(1.0f, 1.0f, -1.0f);
-        gl.glTexCoord2f(0.0f, 1.0f);
-        gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-        gl.glEnd();
-        gl.glPopMatrix();
-        gl.glDisable(GL.GL_BLEND);
+        System.out.println(Game.level);
     }
 
     // Start abanoub code=================================================================================================
@@ -336,18 +313,32 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 
     public void handleKeyPress() {
         if (isKeyPressed(KeyEvent.VK_LEFT)) {
-            players[0].x--;
+            Game.players[1].x--;
 //            }
         }
         if (isKeyPressed(KeyEvent.VK_RIGHT)) {
-            players[0].x++;
+            Game.players[1].x++;
         }
         if (isKeyPressed(KeyEvent.VK_DOWN)) {
-            players[0].y--;
+            Game.players[1].y--;
         }
         if (isKeyPressed(KeyEvent.VK_UP)) {
-            players[0].y++;
+            Game.players[1].y++;
         }
+        if (isKeyPressed(KeyEvent.VK_A)) {
+            Game.players[0].x--;
+//            }
+        }
+        if (isKeyPressed(KeyEvent.VK_D)) {
+            Game.players[0].x++;
+        }
+        if (isKeyPressed(KeyEvent.VK_S)) {
+            Game.players[0].y--;
+        }
+        if (isKeyPressed(KeyEvent.VK_W)) {
+            Game.players[0].y++;
+        }
+
     }
 
 
@@ -360,29 +351,38 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         System.out.println(Xchoose + " " + Ychoose);
         if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 && Ychoose > 74 && Game.displayChanged == 2) {
             Game.displayChanged = 3;
-            Game.level = 0;
+            Game.level = 1;
+            entityManager.reinitializeEntities();
             if (Game.sound) {
                 Game.Mclick.playMusic();
             }
         } else if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 - (1 * 20) && Ychoose > 74 - (1 * 20) && Game.displayChanged == 2) {
             Game.displayChanged = 3;
-            Game.level = 1;
+            Game.level = 2;
+            entityManager.reinitializeEntities();
             if (Game.sound) {
                 Game.Mclick.playMusic();
             }
         } else if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 - (2 * 20) && Ychoose > 74 - (2 * 20) && Game.displayChanged == 2) {
             Game.displayChanged = 3;
-            Game.level = 2;
+            Game.level = 3;
+            entityManager.reinitializeEntities();
             if (Game.sound) {
                 Game.Mclick.playMusic();
             }
-        } else if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 - (3 * 20) && Ychoose > 74 - (3 * 20) && Game.displayChanged == 2) {
+        } else if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 - (3 * 20) && Ychoose > 74 - (3 * 20) && Game.displayChanged == 2) { // exit inside the level screen
             if (Game.sound) {
                 Game.Eclick.playMusic();
             }
             Game.displayChanged = 0;
-        } else if (Xchoose > 0 && Xchoose < 9 && Ychoose < 100 && Ychoose > 90 && Game.displayChanged == 3) {
+        } else if (Xchoose > 0 && Xchoose < 9 && Ychoose < 100 && Ychoose > 90 && Game.displayChanged == 3) { // the exit inside the level
             Game.displayChanged = 2;
+            if (Game.sound) {
+
+                Game.Eclick.playMusic();
+            }
+        } else if (Xchoose > 0 && Xchoose < 9 && Ychoose < 100 && Ychoose > 90 && Game.displayChanged == -1) {
+            Game.displayChanged = 0;
             if (Game.sound) {
                 Game.Eclick.playMusic();
             }
@@ -393,7 +393,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
                 Game.Eclick.playMusic();
             }
         } else if (Xchoose > 41 && Xchoose < 59 && Ychoose < 67 && Ychoose > 55 && Game.displayChanged == 0) {
-            Game.displayChanged = 0;
+            Game.displayChanged = -1;
             if (Game.sound) {
                 Game.Eclick.playMusic();
             }
