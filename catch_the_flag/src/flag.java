@@ -2,13 +2,19 @@ import javax.media.opengl.GL;
 
 public class flag extends Entity {
     double scale ;
-    int frame = 0 , type = 0 ;
+    int frame = 0;
+    double hight;
+    boolean team ;
 
-    flag(int x, int y, boolean render, String[] texturesStrings , double scale  , int type ) {
+    flag(int x, int y, boolean render, String[] texturesStrings , double scale  , boolean team ) {
 
         super(x, y, render, texturesStrings);
         this.scale = scale;
-        this.type = type  ;
+        this.team = team  ;
+        this.hitbox.x = x ;
+        this.hitbox.y =y ;
+        this.hitbox.width = 0 ;
+        hight = 0.04 * scale *150 ;
     }
 
     @Override
@@ -27,7 +33,7 @@ public class flag extends Entity {
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.textures[frame]);
         gl.glPushMatrix();
         gl.glTranslated(x / (Game.maxWidth / 2.0) - 0.96, y / (Game.maxHeight / 2.0) - 0.96, 0);
-        gl.glScaled(0.04 * scale, 0.04*scale*1000/700, 1);
+        gl.glScaled(0.04 * scale * ((team)? -1:  1) , 0.04*scale*1000/700, 1);
         //System.out.println(x +" " + y);
         gl.glBegin(GL.GL_QUADS);
         // Front Face
