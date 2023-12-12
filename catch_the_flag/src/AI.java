@@ -35,7 +35,7 @@ public class AI extends Entity {
         } else if (type == 3) {
             Zigzag();
         }
-        System.out.println(ly + "UWU" + lx);
+        System.out.println( type+ "UWU" );
     }
 
     @Override
@@ -81,7 +81,6 @@ public class AI extends Entity {
 
         int p = Game.random.nextInt(0, 35);
         // init blue balls
-        int remain = 12 - 4 + 2 * Game.level;
         for (int k = 0; k < 4 + 2 * Game.level; k++) {
 
             int rxx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
