@@ -1,4 +1,5 @@
 import Texture.TextureReader;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -14,19 +15,17 @@ public abstract class Entity {
 
     hitBox hitbox = null;
     ArrayList<String> Textures = new ArrayList<>();
-    TextureReader.Texture texture[] ;
-    int textures[] ;
+    TextureReader.Texture texture[];
+    int textures[];
 
     Entity(int x, int y, boolean render, String[] texturesStrings) {
         this.x = x;
         this.y = y;
         this.hitbox = new hitBox(x, y, this.width);
-        if (render) {
-            Textures.addAll(Arrays.asList(texturesStrings));
-            texture = new TextureReader.Texture[Textures.size()];
-            textures = new int [Textures.size()];
-            eventListener.gl.glGenTextures(texturesStrings.length, textures, 0);
-        }
+        Textures.addAll(Arrays.asList(texturesStrings));
+        texture = new TextureReader.Texture[Textures.size()];
+        textures = new int[Textures.size()];
+        eventListener.gl.glGenTextures(texturesStrings.length, textures, 0);
     }
 
     abstract public void update();
