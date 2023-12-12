@@ -8,7 +8,7 @@ public class AI extends Entity {
     int type;
     int lx, ly;
     double xd, yd;
-
+    boolean collider = true ;
     AI(int x, int y, boolean render, String[] texturesStrings, int lx, int ly, int t, int type) {
         super(x, y, render, texturesStrings);
         this.xog = x;
@@ -111,6 +111,7 @@ public class AI extends Entity {
         for (int i =  4 + 2 * Game.level ; i < 12 ; i++ )
         {
             Game.Ais[i].render = false;
+            Game.Ais[i].collider = false;
         }
 
     }

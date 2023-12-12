@@ -38,7 +38,6 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
     double Xchoose = 0, Ychoose = 0;
 
 
-    flag flag;
     background back;
 
 
@@ -52,6 +51,12 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         //init background
         back = new background(0, 0, true, Game.backTextures);
         entityManager.addEntity(back);
+        // init flag
+        for (int i = 0; i < 2; i++) {
+
+            Game.flags[i] = new flag(15 + (134 * i - 10), 52 , true ,Game.flagTexture, 1 , i!=0 );
+            entityManager.addEntity(Game.flags[i]);
+        }
         // init players
 
         for (int i = 0; i < 2; i++) {
@@ -179,6 +184,8 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
                 Game.fbs = 0;
                 entityManager.reinitializeEntities();
             }
+            if (collision.isColliding(Game.players[0], Game.flags[1]))
+                System.out.println(Game.flags[1].x);
             DrawEPS(gllevel, 0, 0, scaleML, 3);
             DrawEPS(gllevel, -1.5, 0, scaleML, 7);
         }
