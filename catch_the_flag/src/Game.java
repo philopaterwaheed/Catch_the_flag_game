@@ -4,7 +4,7 @@ import java.util.Random;
 public class Game {
     static int playersX[] = {25, 125};
     static int playersY[] = {50, 50};
-    public static String[] player1Textures = {"old//Balloon1.png" , "old//Balloon2.png"},
+    public static String[] player1Textures = {"old//Balloon1.png" , "old//Balloon2.png" , "old//redballflag.png", "old//blueballflag.png"},
     backTextures = {"old//Back.png"},
      flagTexture = {"flag//flag animation1.png", "flag//flag animation2.png", "flag//flag animation3.png","flag//flag animation4.png", "flag//flag animation5.png"};
     static int level = 0, fbs = 0, maxWidth = 150, maxHeight = 105, displayChanged = 0 , rightXBound = 3 , leftXBound = 141  , downYBound = 4 , upYBound = 97;;
