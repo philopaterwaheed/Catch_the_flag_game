@@ -18,6 +18,14 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
     static int maxWidth = 150;//to use int class player
     static int maxHeight = 150;
 
+    Score score1 = new Score();
+    Score score2 = new Score();
+
+    String[] textureNames = {"flag//flag animation1.png", "flag//flag animation2.png", "flag//flag animation3.png",
+            "old//redflagbb.png", "old//Balloon1.png", "flag//flag animation4.png", "flag//flag animation5.png", "old//Back.png"};
+    TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
+    int[] textures = new int[textureNames.length];
+    //start abanoub code======================================================================
     String[] textureNamesLevel = {"old//Level1.png", "old//Level2.png", "old//Level3.png", "old//R.png", "old//sound.png", "old//mute.png",
             "old//Exit0.png", "old//pause.png", "old//information.png"
             , "old//start.png", "old//Untitled.png", "old//Background.png", "old//Back100.png"};
@@ -25,31 +33,63 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 
     TextureReader.Texture[] texturelevel = new TextureReader.Texture[textureNamesLevel.length];
     int[] textureslevels = new int[textureNamesLevel.length];
-        int MXL = 0, MYL = 0, infIndex = 0;
+    int MXL = 0, MYL = 0;
     double scaleML = 1;
     double Xchoose = 0, Ychoose = 0;
 
 
-    Player[] players = new Player[2];
-    AI[] BlueBalls = new AI[12];
+    flag flag;
+    background back;
 
 
-    static GL  gl ,gllevel;
+    static GL gl, gllevel;
     int x = 5, y = 70;
 
     @Override
     public void init(GLAutoDrawable glAutoDrawable) {
-
-
         gl = glAutoDrawable.getGL();
         gl.glClearColor(1.5f, 0.5f, 0.5f, 0.0f);  // the color of the canvas ;
+        //init background
+        back = new background(0, 0, true, Game.backTextures);
+        entityManager.addEntity(back);
         // init players
 
         for (int i = 0; i < 2; i++) {
-            players[i] = new Player(Game.playersX[i], Game.playersY[i], true, Game.player1Textures, 1);
-            entityManager.addEntity(players[i]);
+            Game.players[i] = new Player(Game.playersX[i], Game.playersY[i], false, Game.player1Textures, 1, i != 0);
         }
 
+        // init players
+
+        for (int i = 0; i < 2; i++) {
+            Game.players[i] = new Player(Game.playersX[i], Game.playersY[i], true, Game.player1Textures, 1, i != 0);
+            entityManager.addEntity(Game.players[i]);
+        }
+        for (int k = 0; k < 12; k++) {
+
+            int rx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
+            int ry = 10 + (int) Math.random() * Game.maxHeight / (3 + Game.level);// 94
+            System.out.println(rx + " " + ry);
+            Game.Ais[k] = new AI(18, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, 1);
+
+            entityManager.addEntity(Game.Ais[k]);
+
+        }
+//        int p = Game.random.nextInt(0, 35);
+//        // init blue balls
+//        for (int k = 0; k < 4 + 2 * Game.level; k++) {
+//
+//            int rx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
+//            int ry = 10 + (int) Math.random() * Game.maxHeight / (3 + Game.level);// 94
+//            System.out.println(rx + " " + ry);
+//
+//            if (k % 2 == 0) {
+//                p = Game.random.nextInt(0, 35);
+//            }
+//            Game.Ais[k] = new AI(18 + p % 3 * 10, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, p % 4);
+//
+//
+//        }
+        AI.reInit();
 
         gllevel = glAutoDrawable.getGL();
         gllevel.glClearColor(1.5f, 0.5f, 0.5f, 0.0f); // the color of the canvas ;
@@ -98,36 +138,17 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             }
         }
         // end of philo code
-
-
     }
 
-    public void mmmm () {
+    public void mmmm() {
 
-        int p = Game.random.nextInt(0, 35);
-        // init blue balls
-        for (int k = 0; k < 4 + 2 * Game.level; k++) {
 
-            int rx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
-            int ry = 10 + (int) Math.random() * Game.maxHeight / (3 + Game.level);// 94
-            System.out.println(rx + " " + ry);
-
-            if (k % 2 == 0) {
-                p = Game.random.nextInt(0, 35);
-            }
-            BlueBalls[k] = new AI(18 + p % 3 * 10, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, p % 4);
-
-            entityManager.addEntity(BlueBalls[k]);
-
-        }
     }
 
 
     @Override
     public void display(GLAutoDrawable glAutoDrawable) {
-
-
-        Game.fbs++;
+        Game.fbs++; // per frame ;
         gllevel.glClear(GL.GL_COLOR_BUFFER_BIT);
         gllevel.glLoadIdentity();
         if (Game.displayChanged == 0) {
@@ -147,11 +168,15 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         } else if (Game.displayChanged == 3) {
             handleKeyPress();
             entityManager.update();
+            DrawEPS(gllevel, 0, 0, scaleML, 3);
+            DrawEPS(gllevel, -1.5, 0, scaleML, 7);
             entityManager.render(gllevel);
-
+            gl.glColor3f(0.0f, 0.0f, 1f);
+            score1.drawScore(gl, -0.95f, -0.99f, "RedScore: ");
+            score2.drawScore(gl, 0.7f, -0.98f, "BlueScore: ");
+            gl.glColor3f(1, 1, 1);
             if (Game.fbs == 24)
                 Game.fbs = 0;
-
             DrawEPS(gllevel, 0, 0, scaleML, 3);
             DrawEPS(gllevel, -1.5, 0, scaleML, 7);
         }
@@ -289,18 +314,32 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 
     public void handleKeyPress() {
         if (isKeyPressed(KeyEvent.VK_LEFT)) {
-            players[0].x--;
+            Game.players[1].x--;
 //            }
         }
         if (isKeyPressed(KeyEvent.VK_RIGHT)) {
-            players[0].x++;
+            Game.players[1].x++;
         }
         if (isKeyPressed(KeyEvent.VK_DOWN)) {
-            players[0].y--;
+            Game.players[1].y--;
         }
         if (isKeyPressed(KeyEvent.VK_UP)) {
-            players[0].y++;
+            Game.players[1].y++;
         }
+        if (isKeyPressed(KeyEvent.VK_A)) {
+            Game.players[0].x--;
+//            }
+        }
+        if (isKeyPressed(KeyEvent.VK_D)) {
+            Game.players[0].x++;
+        }
+        if (isKeyPressed(KeyEvent.VK_S)) {
+            Game.players[0].y--;
+        }
+        if (isKeyPressed(KeyEvent.VK_W)) {
+            Game.players[0].y++;
+        }
+
     }
 
 
@@ -314,32 +353,33 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 && Ychoose > 74 && Game.displayChanged == 2) {
             Game.displayChanged = 3;
             Game.level = 1;
-            mmmm();
+            entityManager.reinitializeEntities();
             if (Game.sound) {
                 Game.Mclick.playMusic();
             }
         } else if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 - (1 * 20) && Ychoose > 74 - (1 * 20) && Game.displayChanged == 2) {
             Game.displayChanged = 3;
             Game.level = 2;
-            mmmm();
+            entityManager.reinitializeEntities();
             if (Game.sound) {
                 Game.Mclick.playMusic();
             }
         } else if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 - (2 * 20) && Ychoose > 74 - (2 * 20) && Game.displayChanged == 2) {
             Game.displayChanged = 3;
             Game.level = 3;
-            mmmm();
+            entityManager.reinitializeEntities();
             if (Game.sound) {
                 Game.Mclick.playMusic();
             }
-        } else if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 - (3 * 20) && Ychoose > 74 - (3 * 20) && Game.displayChanged == 2) {
+        } else if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 - (3 * 20) && Ychoose > 74 - (3 * 20) && Game.displayChanged == 2) { // exit inside the level screen
             if (Game.sound) {
                 Game.Eclick.playMusic();
             }
             Game.displayChanged = 0;
-        } else if (Xchoose > 0 && Xchoose < 9 && Ychoose < 100 && Ychoose > 90 && Game.displayChanged == 3) {
+        } else if (Xchoose > 0 && Xchoose < 9 && Ychoose < 100 && Ychoose > 90 && Game.displayChanged == 3) { // the exit inside the level
             Game.displayChanged = 2;
             if (Game.sound) {
+
                 Game.Eclick.playMusic();
             }
         } else if (Xchoose > 0 && Xchoose < 9 && Ychoose < 100 && Ychoose > 90 && Game.displayChanged == -1) {

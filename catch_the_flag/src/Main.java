@@ -29,7 +29,7 @@ public class Main extends  JFrame {
         glcanvas.setFocusable(true);//set focus for Listener
         glcanvas.requestFocus();
         getContentPane().add(glcanvas, BorderLayout.CENTER);
-        setSize(1000, 700);
+        setSize(1200, 900);
         setLocationRelativeTo(this);
         setVisible(true);
     }
