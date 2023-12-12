@@ -23,19 +23,22 @@ public class AI extends Entity {
 
     @Override
     public void update() {
-        System.out.println(team);
-        if (type == 0) {
-            ly = 0;
-            Zigzag();
-        } else if (type == 1)
-            Zigzag();
-        else if (type == 2) {
-            lx = 0;
-            Zigzag();
-        } else if (type == 3) {
-            Zigzag();
+        if (render) {
+//            System.out.println(team);
+            if (type == 0) {
+                ly = 0;
+                Zigzag();
+            } else if (type == 1){
+                Zigzag();
+            }
+            else if (type == 2) {
+                lx = 0;
+                Zigzag();
+            } else if (type == 3) {
+                Zigzag();
+            }
+//            System.out.println(type + "UWU");
         }
-        System.out.println( type+ "UWU" );
     }
 
     @Override
@@ -90,14 +93,19 @@ public class AI extends Entity {
                 p = Game.random.nextInt(0, 35);
             }
 
-//            Game.Ais[k] = new AI(18 + p % 3 * 10, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, p % 4);
-            Game.Ais[k].x = 18 + p % 3 * 10;
-            Game.Ais[k].y = 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level));
+//            Game.Ais[k] = new AI(18 + p % 3 * 10, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rxx, ryx, k % 2, p % 4);
+            Game.Ais[k].xd =Game.Ais[k].x = 18 + p % 3 * 10;
+            Game.Ais[k].yd =Game.Ais[k].y = 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level));
             Game.Ais[k].render = true;
-            Game.Ais[k].lx=20 + rxx;
+            Game.Ais[k].lx= 20 + rxx;
             Game.Ais[k].ly= ryx;
             Game.Ais[k].team = k%2;
             Game.Ais[k].type=p % 4;
+            Game.Ais[k].h =0 ;
+            Game.Ais[k].v =0 ;
+            Game.Ais[k].m =1 ;
+            Game.Ais[k].d =1 ;
+
 
         }
         for (int i =  4 + 2 * Game.level ; i < 12 ; i++ )

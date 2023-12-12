@@ -21,7 +21,7 @@ public class Player extends Entity {
 
     @Override
     public void render(GL gl) {
-        System.out.println(x+ " " + y);
+//        System.out.println(x+ " " + y);
         gl.glEnable(GL.GL_BLEND);
         gl.glBindTexture(GL.GL_TEXTURE_2D, this.textures[frame]);
         gl.glPushMatrix();

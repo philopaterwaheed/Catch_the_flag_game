@@ -68,7 +68,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 
             int rx = 10 + (int) Math.random() * Game.maxWidth / (3 + Game.level);// 140
             int ry = 10 + (int) Math.random() * Game.maxHeight / (3 + Game.level);// 94
-            System.out.println(rx + " " + ry);
+//            System.out.println(rx + " " + ry);
             Game.Ais[k] = new AI(18, 5 + (k / 2) * Game.maxHeight / (2 + Game.level) + Game.maxHeight / ((2 + Game.level) * (3 + Game.level)), true, Game.player1Textures, 20 + rx, ry, k % 2, 1);
 
             entityManager.addEntity(Game.Ais[k]);
@@ -175,8 +175,10 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             score1.drawScore(gl, -0.95f, -0.99f, "RedScore: ");
             score2.drawScore(gl, 0.7f, -0.98f, "BlueScore: ");
             gl.glColor3f(1, 1, 1);
-            if (Game.fbs == 24)
+            if (Game.fbs == 24) {
                 Game.fbs = 0;
+                entityManager.reinitializeEntities();
+            }
             DrawEPS(gllevel, 0, 0, scaleML, 3);
             DrawEPS(gllevel, -1.5, 0, scaleML, 7);
         }
@@ -185,7 +187,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         } else {
             DrawEPS(gllevel, -1.78, 0.03, .5, 5);
         }
-        System.out.println(Game.level);
+//        System.out.println(Game.level);
     }
 
     // Start abanoub code=================================================================================================
@@ -349,7 +351,7 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println(Xchoose + " " + Ychoose);
+//        System.out.println(Xchoose + " " + Ychoose);
         if (Xchoose > 44 && Xchoose < 58 && Ychoose < 85 && Ychoose > 74 && Game.displayChanged == 2) {
             Game.displayChanged = 3;
             Game.level = 1;
