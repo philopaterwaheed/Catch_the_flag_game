@@ -21,12 +21,10 @@ public abstract class Entity {
         this.x = x;
         this.y = y;
         this.hitbox = new hitBox(x, y, this.width);
-        if (render) {
             Textures.addAll(Arrays.asList(texturesStrings));
             texture = new TextureReader.Texture[Textures.size()];
             textures = new int [Textures.size()];
             eventListener.gl.glGenTextures(texturesStrings.length, textures, 0);
-        }
     }
 
     abstract public void update();
