@@ -22,6 +22,9 @@ public class entityManager {
         if (e != null){
             e.destroy();
         }
-
+    }
+    public static void reinitializeEntities(){
+        AI.reInit();
+        Player.reInit();
     }
 }
