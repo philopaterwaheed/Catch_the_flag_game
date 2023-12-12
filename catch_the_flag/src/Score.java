@@ -11,7 +11,6 @@ public class Score {
         gl.glRasterPos2f(x, y);
         String scoreString = s + " " + score;
         glut.glutBitmapString(GLUT.BITMAP_TIMES_ROMAN_24, scoreString);
-
     }
 
     public void drawEndScore(GL gl, double x, double y) {
