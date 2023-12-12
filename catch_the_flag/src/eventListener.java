@@ -106,7 +106,8 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
         gllevel.glGenTextures(textureNamesLevel.length, textureslevels, 0);
         for (int i = 0; i < textureNamesLevel.length; i++) {
             try {
-                texturelevel[i] = TextureReader.readTexture(assetsFolderName + "//" + textureNamesLevel[i], true);
+                texturelevel[i] = TextureReader.readTexture(assetsFolderName + "//" + textureNameslevel[i], true);
+      
                 gl.glBindTexture(GL.GL_TEXTURE_2D, textureslevels[i]);
                 new GLU().gluBuild2DMipmaps(
                         GL.GL_TEXTURE_2D,
@@ -125,7 +126,8 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             for (int i = 0; i < entity.texture.length; i++) {
                 try {
                     entity.texture[i] = TextureReader.readTexture(assetsFolderName + "//" + entity.Textures.get(i), true);
-                    gl.glBindTexture(GL.GL_TEXTURE_2D, entity.textures[i]);
+                    
+                    gllevel.glBindTexture(GL.GL_TEXTURE_2D, entity.textures[i]);
 
                     //                mipmapsFromPNG(gl, new GLU(), texture[i]);
                     new GLU().gluBuild2DMipmaps(
