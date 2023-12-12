@@ -16,13 +16,16 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
     int frame = 0;
     static int maxWidth = 150;//to use int class player
     static int maxHeight = 150;
+    Score score1 = new Score();
+    Score score2 = new Score();
+
     String[] textureNames = {"flag//flag animation1.png", "flag//flag animation2.png", "flag//flag animation3.png",
             "old//redflagbb.png", "old//Balloon1.png", "flag//flag animation4.png", "flag//flag animation5.png", "old//Back.png"};
     TextureReader.Texture[] texture = new TextureReader.Texture[textureNames.length];
     int[] textures = new int[textureNames.length];
     //start abanoub code======================================================================
     String[] textureNamesLevel = {"old//Level1.png", "old//Level2.png", "old//Level3.png", "old//R.png", "old//sound.png", "old//mute.png",
-                "old//Exit0.png", "old//pause.png","old//information.png" ,"old//start.png","old//Background.png", "old//Back100.png"};
+            "old//Exit0.png", "old//pause.png", "old//information.png", "old//start.png", "old//Background.png", "old//Back100.png"};
 
 
     TextureReader.Texture[] texturelevel = new TextureReader.Texture[textureNamesLevel.length];
@@ -153,6 +156,8 @@ public class eventListener extends AnimListener implements MouseMotionListener, 
             DrawBackground(gl);
             handleKeyPress();
             entityManager.update();
+            score1.drawScore(gl, -0.95f, -0.95f, "RedScore: ");
+            score2.drawScore(gl, 0.7f, -0.95f, "BlueScore: ");
             DrawEPS(gllevel, 0, 0, scaleML, 3);
             DrawEPS(gllevel, -1.5, 0, scaleML, 7);
             entityManager.render(gl);
