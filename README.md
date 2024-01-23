@@ -8,11 +8,20 @@ a graphics project for the university
 The goal is to build a game of catch the flag
 
 ## Team
+### A real hard working one 
 Abanob Samaan, 
 Abdelrahman Mohammed, 
 Bavly Akramy [git](https://github.com/BavlyEkramy),
 Moustafa Hany, 
 Philopater Waheed [git](https://github.com/philopaterwaheed)
+
+<br>
+<p align=left> 
+<a href="https://github.com/hiddify/hiddify-next/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=philopaterwaheed/Catch_the_flag_game" />
+</a>
+</p>
+
 ### tools
 - **Jogl**
 - **IntelliJ IDEA**
