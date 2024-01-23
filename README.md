@@ -17,7 +17,7 @@ Philopater Waheed [git](https://github.com/philopaterwaheed)
 
 <br>
 <p align=left> 
-<a href="https://github.com/hiddify/hiddify-next/graphs/contributors">
+<a href="https://github.com/philopaterwaheed/Catch_the_flag_game/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=philopaterwaheed/Catch_the_flag_game" />
 </a>
 </p>
